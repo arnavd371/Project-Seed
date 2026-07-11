@@ -1,0 +1,508 @@
+{
+  "baseline": {
+    "accuracy": 0.9881,
+    "macro_f1": 0.7381,
+    "per_class_f1": {
+      "0": 1.0,
+      "1": 1.0,
+      "2": 0.9523809523809523,
+      "3": 0.0
+    },
+    "n_splits": 5,
+    "n_groups": 168,
+    "row_level_accuracy": 0.9881,
+    "cv_method": "StratifiedGroupKFold by gene|genotype (metrics at group level)",
+    "unique_groups_per_class": {
+      "0": 57,
+      "1": 89,
+      "2": 20,
+      "3": 2
+    },
+    "tuned_params": {
+      "n_estimators": 160,
+      "max_depth": 6,
+      "learning_rate": 0.05,
+      "subsample": 0.9,
+      "colsample_bytree": 0.9,
+      "reg_lambda": 5.0,
+      "min_child_weight": 1,
+      "gamma": 0.0
+    },
+    "tuning_cv_macro_f1": 0.7381,
+    "overfitting_diagnosis": {
+      "train_accuracy": 0.9881,
+      "train_macro_f1": 0.7381,
+      "cv_accuracy": 0.9881,
+      "cv_macro_f1": 0.7381,
+      "accuracy_gap": 0.0,
+      "macro_f1_gap": 0.0,
+      "overfitting_flagged": false,
+      "overfitting_threshold": 0.1,
+      "n_groups": 168,
+      "n_splits": 5
+    },
+    "regularization_applied": false
+  },
+  "rule_baseline": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "per_class_f1": {
+      "0": 1.0,
+      "1": 1.0,
+      "2": 1.0,
+      "3": 1.0
+    },
+    "n_groups": 168,
+    "cv_method": "rule-based (group-level, no ML training)",
+    "description": "CPIC phenotype score thresholds only \u2014 traditional software baseline",
+    "overfitting_diagnosis": {
+      "train_accuracy": 1.0,
+      "cv_accuracy": 1.0,
+      "accuracy_gap": 0.0,
+      "overfitting_flagged": false,
+      "note": "Deterministic rule \u2014 no train/CV split applicable"
+    }
+  },
+  "population_only": {
+    "accuracy": 0.5893,
+    "macro_f1": 0.5153,
+    "weighted_f1": 0.5835,
+    "cohen_kappa": 0.4198,
+    "per_class_f1": {
+      "0": 0.5283018867924528,
+      "1": 0.7333333333333333,
+      "2": 0.5853658536585366,
+      "3": 0.21428571428571427
+    },
+    "n_groups": 168,
+    "n_splits": 5,
+    "cv_method": "StratifiedGroupKFold by gene|genotype (metrics at group level)",
+    "features": [
+      "india_diplotype_freq",
+      "european_diplotype_freq",
+      "east_asian_diplotype_freq",
+      "african_diplotype_freq",
+      "american_diplotype_freq",
+      "global_diplotype_freq",
+      "sas_vs_eur_ratio",
+      "sas_vs_eas_ratio",
+      "sas_vs_global_ratio",
+      "gene_importance",
+      "is_chemo_gene",
+      "log_india_freq",
+      "india_gt_europe",
+      "freq_difference",
+      "subpop_dispersion",
+      "subpop_entropy",
+      "star_allele_count",
+      "is_compound_het",
+      "is_homozygous_variant"
+    ],
+    "label": "population_adjusted_significance",
+    "description": "No CPIC/clinical_significance in features \u2014 population structure only",
+    "tuned_params": {
+      "n_estimators": 80,
+      "max_depth": 5,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.9,
+      "reg_lambda": 1.0,
+      "min_child_weight": 1,
+      "gamma": 0.5
+    },
+    "overfitting_diagnosis": {
+      "train_accuracy": 0.9048,
+      "train_macro_f1": 0.9041,
+      "cv_accuracy": 0.5893,
+      "cv_macro_f1": 0.5153,
+      "accuracy_gap": 0.3155,
+      "macro_f1_gap": 0.3888,
+      "overfitting_flagged": true,
+      "overfitting_threshold": 0.1,
+      "n_groups": 168,
+      "n_splits": 5
+    }
+  },
+  "india_calibrated": {
+    "accuracy": 0.9643,
+    "macro_f1": 0.9681,
+    "weighted_f1": 0.964,
+    "cohen_kappa": 0.9494,
+    "per_class_precision": {
+      "0": 1.0,
+      "1": 0.9152542372881356,
+      "2": 0.9736842105263158,
+      "3": 1.0
+    },
+    "per_class_recall": {
+      "0": 1.0,
+      "1": 0.9818181818181818,
+      "2": 0.8809523809523809,
+      "3": 1.0
+    },
+    "per_class_f1": {
+      "0": 1.0,
+      "1": 0.9473684210526315,
+      "2": 0.925,
+      "3": 1.0
+    },
+    "n_splits": 5,
+    "n_groups": 168,
+    "training_source": "sas_deduped",
+    "row_level_accuracy": 0.9643,
+    "cv_method": "StratifiedGroupKFold by gene|genotype (metrics at group level)",
+    "unique_groups_per_class": {
+      "0": 57,
+      "1": 55,
+      "2": 42,
+      "3": 14
+    },
+    "feature_importances": {
+      "india_diplotype_freq": 0.0,
+      "european_diplotype_freq": 0.03449155390262604,
+      "east_asian_diplotype_freq": 0.02311405912041664,
+      "african_diplotype_freq": 0.011795123107731342,
+      "american_diplotype_freq": 0.020812341943383217,
+      "global_diplotype_freq": 0.02599051408469677,
+      "sas_vs_eur_ratio": 0.17575675249099731,
+      "sas_vs_eas_ratio": 0.030681084841489792,
+      "sas_vs_global_ratio": 0.0170002318918705,
+      "gene_importance": 0.013787577860057354,
+      "is_chemo_gene": 0.024125928059220314,
+      "log_india_freq": 0.0,
+      "india_gt_europe": 0.0,
+      "freq_difference": 0.02911587618291378,
+      "subpop_dispersion": 0.027838386595249176,
+      "subpop_entropy": 0.0,
+      "star_allele_count": 0.0,
+      "is_compound_het": 0.07536174356937408,
+      "is_homozygous_variant": 0.0,
+      "clinical_significance": 0.49012884497642517
+    },
+    "features": [
+      "india_diplotype_freq",
+      "european_diplotype_freq",
+      "east_asian_diplotype_freq",
+      "african_diplotype_freq",
+      "american_diplotype_freq",
+      "global_diplotype_freq",
+      "sas_vs_eur_ratio",
+      "sas_vs_eas_ratio",
+      "sas_vs_global_ratio",
+      "gene_importance",
+      "is_chemo_gene",
+      "log_india_freq",
+      "india_gt_europe",
+      "freq_difference",
+      "subpop_dispersion",
+      "subpop_entropy",
+      "star_allele_count",
+      "is_compound_het",
+      "is_homozygous_variant",
+      "clinical_significance"
+    ],
+    "label": "population_adjusted_significance",
+    "tuned_params": {
+      "n_estimators": 160,
+      "max_depth": 5,
+      "learning_rate": 0.08,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "reg_lambda": 5.0,
+      "min_child_weight": 5,
+      "gamma": 0.2
+    },
+    "tuning_cv_macro_f1": 0.9681,
+    "class_weights": "balanced",
+    "overfitting_diagnosis": {
+      "train_accuracy": 0.9702,
+      "train_macro_f1": 0.9733,
+      "cv_accuracy": 0.9643,
+      "cv_macro_f1": 0.9681,
+      "accuracy_gap": 0.006,
+      "macro_f1_gap": 0.0052,
+      "overfitting_flagged": false,
+      "overfitting_threshold": 0.1,
+      "n_groups": 168,
+      "n_splits": 5
+    },
+    "regularization_applied": false
+  },
+  "risk_regressor": {
+    "rule_adjusted_mae": 0.0,
+    "heuristic_mae": 0.0905,
+    "heuristic_rmse": 0.1502,
+    "ml_mae": 0.01,
+    "ml_rmse": 0.0389,
+    "ml_r2": 0.9852,
+    "mae_improvement_vs_rule": -0.01,
+    "mae_improvement": 0.0806,
+    "n_splits": 5,
+    "feature_importances": {
+      "india_diplotype_freq": 0.0007161874091252685,
+      "european_diplotype_freq": 0.00032715892302803695,
+      "east_asian_diplotype_freq": 0.0004044922243338078,
+      "african_diplotype_freq": 0.0024977282155305147,
+      "american_diplotype_freq": 0.0007727245683781803,
+      "global_diplotype_freq": 0.013486356474459171,
+      "sas_vs_eur_ratio": 0.25164616107940674,
+      "sas_vs_eas_ratio": 0.00033185933716595173,
+      "sas_vs_global_ratio": 0.0003330422332510352,
+      "gene_importance": 0.0009346343576908112,
+      "is_chemo_gene": 6.0067904996685684e-05,
+      "log_india_freq": 0.0,
+      "india_gt_europe": 0.0,
+      "freq_difference": 0.0001513526076450944,
+      "subpop_dispersion": 3.3580978197278455e-05,
+      "subpop_entropy": 0.0003637148183770478,
+      "star_allele_count": 2.4030590793699957e-05,
+      "is_compound_het": 0.002962979255244136,
+      "is_homozygous_variant": 9.367195889353752e-05,
+      "clinical_significance": 0.7248603105545044
+    },
+    "tuned_params": {
+      "n_estimators": 200,
+      "max_depth": 6,
+      "learning_rate": 0.05,
+      "subsample": 0.7,
+      "colsample_bytree": 1.0,
+      "reg_lambda": 1.0,
+      "min_child_weight": 2,
+      "gamma": 0.0
+    }
+  },
+  "loso": {
+    "GIH": {
+      "population_name": "Gujarati (Houston)",
+      "n_test_rows": 1271,
+      "n_test_groups": 97,
+      "accuracy": 1.0,
+      "macro_f1": 1.0
+    },
+    "PJL": {
+      "population_name": "Punjabi (Lahore)",
+      "n_test_rows": 1194,
+      "n_test_groups": 102,
+      "accuracy": 0.9902,
+      "macro_f1": 0.9785
+    },
+    "ITU": {
+      "population_name": "Indian Telugu",
+      "n_test_rows": 1250,
+      "n_test_groups": 99,
+      "accuracy": 1.0,
+      "macro_f1": 1.0
+    },
+    "STU": {
+      "population_name": "Sri Lankan Tamil",
+      "n_test_rows": 1254,
+      "n_test_groups": 94,
+      "accuracy": 1.0,
+      "macro_f1": 1.0
+    },
+    "BEB": {
+      "population_name": "Bengali",
+      "n_test_rows": 1066,
+      "n_test_groups": 90,
+      "accuracy": 1.0,
+      "macro_f1": 1.0
+    },
+    "summary": {
+      "mean_accuracy": 0.998,
+      "std_accuracy": 0.0039,
+      "n_folds": 5
+    }
+  },
+  "gene_holdout": {
+    "calibration_model": {
+      "per_gene": {
+        "ABCG2": {
+          "n_test_groups": 3,
+          "accuracy": 0.6667,
+          "macro_f1": 0.5556
+        },
+        "CYP2B6": {
+          "n_test_groups": 21,
+          "accuracy": 0.9524,
+          "macro_f1": 0.958
+        },
+        "CYP2C19": {
+          "n_test_groups": 11,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "CYP2C9": {
+          "n_test_groups": 10,
+          "accuracy": 0.9,
+          "macro_f1": 0.9222
+        },
+        "CYP2D6": {
+          "n_test_groups": 50,
+          "accuracy": 0.94,
+          "macro_f1": 0.9539
+        },
+        "CYP3A5": {
+          "n_test_groups": 3,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "DPYD": {
+          "n_test_groups": 38,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "F5": {
+          "n_test_groups": 2,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "NUDT15": {
+          "n_test_groups": 3,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "SLCO1B1": {
+          "n_test_groups": 16,
+          "accuracy": 0.9375,
+          "macro_f1": 0.9487
+        },
+        "TPMT": {
+          "n_test_groups": 3,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "UGT1A1": {
+          "n_test_groups": 7,
+          "accuracy": 0.8571,
+          "macro_f1": 0.6667
+        }
+      },
+      "summary": {
+        "mean_accuracy": 0.9378,
+        "std_accuracy": 0.0935,
+        "n_genes": 12
+      }
+    },
+    "population_only_model": {
+      "per_gene": {
+        "ABCG2": {
+          "n_test_groups": 3,
+          "accuracy": 0.3333,
+          "macro_f1": 0.2222
+        },
+        "CYP2B6": {
+          "n_test_groups": 21,
+          "accuracy": 0.619,
+          "macro_f1": 0.5515
+        },
+        "CYP2C19": {
+          "n_test_groups": 11,
+          "accuracy": 0.4545,
+          "macro_f1": 0.369
+        },
+        "CYP2C9": {
+          "n_test_groups": 10,
+          "accuracy": 0.6,
+          "macro_f1": 0.497
+        },
+        "CYP2D6": {
+          "n_test_groups": 50,
+          "accuracy": 0.62,
+          "macro_f1": 0.4218
+        },
+        "CYP3A5": {
+          "n_test_groups": 3,
+          "accuracy": 0.0,
+          "macro_f1": 0.0
+        },
+        "DPYD": {
+          "n_test_groups": 38,
+          "accuracy": 0.3684,
+          "macro_f1": 0.3602
+        },
+        "F5": {
+          "n_test_groups": 2,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "NUDT15": {
+          "n_test_groups": 3,
+          "accuracy": 0.3333,
+          "macro_f1": 0.2222
+        },
+        "SLCO1B1": {
+          "n_test_groups": 16,
+          "accuracy": 0.75,
+          "macro_f1": 0.7168
+        },
+        "TPMT": {
+          "n_test_groups": 3,
+          "accuracy": 0.3333,
+          "macro_f1": 0.1667
+        },
+        "UGT1A1": {
+          "n_test_groups": 7,
+          "accuracy": 0.2857,
+          "macro_f1": 0.225
+        }
+      },
+      "summary": {
+        "mean_accuracy": 0.4748,
+        "std_accuracy": 0.2487,
+        "n_genes": 12
+      }
+    }
+  },
+  "overfitting_diagnosis": {
+    "models": {
+      "global_baseline": {
+        "train_accuracy": 0.9881,
+        "train_macro_f1": 0.7381,
+        "cv_accuracy": 0.9881,
+        "cv_macro_f1": 0.7381,
+        "accuracy_gap": 0.0,
+        "macro_f1_gap": 0.0,
+        "overfitting_flagged": false,
+        "overfitting_threshold": 0.1,
+        "n_groups": 168,
+        "n_splits": 5
+      },
+      "india_calibrated": {
+        "train_accuracy": 0.9702,
+        "train_macro_f1": 0.9733,
+        "cv_accuracy": 0.9643,
+        "cv_macro_f1": 0.9681,
+        "accuracy_gap": 0.006,
+        "macro_f1_gap": 0.0052,
+        "overfitting_flagged": false,
+        "overfitting_threshold": 0.1,
+        "n_groups": 168,
+        "n_splits": 5
+      },
+      "population_only": {
+        "train_accuracy": 0.9048,
+        "train_macro_f1": 0.9041,
+        "cv_accuracy": 0.5893,
+        "cv_macro_f1": 0.5153,
+        "accuracy_gap": 0.3155,
+        "macro_f1_gap": 0.3888,
+        "overfitting_flagged": true,
+        "overfitting_threshold": 0.1,
+        "n_groups": 168,
+        "n_splits": 5
+      }
+    },
+    "any_overfitting_flagged": true,
+    "threshold": 0.1,
+    "risk_regressor_note": "Regression overfitting assessed via grouped-CV MAE during tuning (MAE=0.01)"
+  },
+  "accuracy_delta_india_vs_baseline": -0.0238,
+  "methodological_notes": [
+    "Real WGS only: dedupe_records_by_group(real_training_data.json) \u2014 168 unique gene|genotype groups from 6,035 SAS individuals. genotype_catalog.json is NOT used for training. Optional frequency_reference.json is read-only aggregated stats, not training data.",
+    "Grouped CV: StratifiedGroupKFold by gene|genotype. Metrics at group level \u2014 each genotype counts once, not once per person.",
+    "No SMOTE or synthetic oversampling. India classifier uses balanced class weights. Hyperparameters tuned optimizing grouped-CV macro F1.",
+    "Overfitting check: train-set group-level accuracy vs grouped-CV accuracy; gap > 0.10 triggers stronger regularization (lower max_depth, higher min_child_weight/reg_lambda).",
+    "India classifier uses population features + CPIC clinical_significance and predicts population_adjusted_significance.",
+    "LOSO uses genotype-level SAS-wide frequencies identical across subpopulations for the same genotype \u2014 high LOSO accuracy reflects label consistency."
+  ]
+}

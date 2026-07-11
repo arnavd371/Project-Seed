@@ -1,0 +1,35 @@
+SEED MODEL COMPARISON (SAS-only real WGS training)
+==============================================================================
+Model                           Accuracy    Macro F1    Groups  Label
+------------------------------------------------------------------------------
+Global Baseline (ML)            0.99        0.74        168     clinical_significance
+Rule Baseline (no ML)           1.00        1.00        168     clinical_significance
+Population-Only ML (no CPIC)    0.59        0.52        168     population_adjusted (hard)
+Calibration ML (CPIC+pop)       0.96        0.97        168     population_adjusted
+==============================================================================
+
+OVERFITTING DIAGNOSIS (train acc − grouped-CV acc, threshold 0.10)
+  Global Baseline: train=0.988  cv=0.988  gap=0.000  [OK]
+  Population-Only ML: train=0.905  cv=0.589  gap=0.316  [FLAGGED]
+  India Calibrated: train=0.970  cv=0.964  gap=0.006  [OK]
+
+RISK REGRESSOR (continuous 0–1 India risk score)
+  Rule-adjusted MAE:    0.0000
+  Simple heuristic MAE: 0.0905
+  XGBRegressor MAE:     0.0100  R²=0.9852
+  ML vs rule-adjusted:  -0.0100 MAE
+
+LOSO (leave-one-SAS-subpopulation-out, group-level metrics)
+  GIH (Gujarati (Houston)): acc=1.00 macro_f1=1.00 groups=97
+  PJL (Punjabi (Lahore)): acc=0.99 macro_f1=0.98 groups=102
+  ITU (Indian Telugu): acc=1.00 macro_f1=1.00 groups=99
+  STU (Sri Lankan Tamil): acc=1.00 macro_f1=1.00 groups=94
+  BEB (Bengali): acc=1.00 macro_f1=1.00 groups=90
+  Mean LOSO accuracy: 1.00 (±0.00)
+
+GENE-HELD-OUT CV (leave-one-gene-out, group-level metrics)
+  Calibration ML: mean acc=0.94 (±0.09)  genes=12
+  Population-Only ML: mean acc=0.47 (±0.25)  genes=12
+
+Training: dedupe_records_by_group(real_training_data.json) ONLY - 168 SAS genotype groups from 6,035 real individuals.
+No genotype_catalog.json. Grouped CV by gene|genotype. No SMOTE. Class weights (balanced) for India model.

@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "source": "gnomAD v4 - South Asian (remaining) ancestry allele frequencies",
+    "url": "https://gnomad.broadinstitute.org",
+    "note": "Reference allele frequencies for comparison with 1000 Genomes SAS. Not used for ML training.",
+    "citation": "Chen S et al. A genomic mutational constraint map using variation in 76,156 human genomes. Nature 2024 (gnomAD v4)"
+  },
+  "allele_frequencies": {
+    "CYP2C19|*2": {"gnomad_sas_af": 0.358, "gnomad_nfe_af": 0.145, "description": "CYP2C19 loss-of-function *2"},
+    "CYP2C19|*17": {"gnomad_sas_af": 0.198, "gnomad_nfe_af": 0.214, "description": "CYP2C19 gain-of-function *17"},
+    "CYP2D6|*4": {"gnomad_sas_af": 0.012, "gnomad_nfe_af": 0.205, "description": "CYP2D6 poor metabolizer *4"},
+    "CYP2D6|*10": {"gnomad_sas_af": 0.382, "gnomad_nfe_af": 0.002, "description": "CYP2D6 decreased function *10 - enriched in South Asians"},
+    "CYP2C9|*2": {"gnomad_sas_af": 0.028, "gnomad_nfe_af": 0.115, "description": "CYP2C9 *2"},
+    "CYP2C9|*3": {"gnomad_sas_af": 0.048, "gnomad_nfe_af": 0.065, "description": "CYP2C9 *3"},
+    "DPYD|*2A": {"gnomad_sas_af": 0.001, "gnomad_nfe_af": 0.012, "description": "DPYD fluoropyrimidine toxicity *2A"},
+    "DPYD|*13": {"gnomad_sas_af": 0.0002, "gnomad_nfe_af": 0.001, "description": "DPYD *13"},
+    "NUDT15|*3": {"gnomad_sas_af": 0.018, "gnomad_nfe_af": 0.002, "description": "NUDT15 thiopurine toxicity *3 - higher in SAS"},
+    "TPMT|*3A": {"gnomad_sas_af": 0.008, "gnomad_nfe_af": 0.028, "description": "TPMT *3A"},
+    "SLCO1B1|*5": {"gnomad_sas_af": 0.012, "gnomad_nfe_af": 0.168, "description": "SLCO1B1 statin transporter *5"},
+    "UGT1A1|*28": {"gnomad_sas_af": 0.092, "gnomad_nfe_af": 0.312, "description": "UGT1A1 irinotecan *28 TA repeat"},
+    "IFNL3|rs12979860_C": {"gnomad_sas_af": 0.312, "gnomad_nfe_af": 0.685, "description": "IFNL3 hepatitis C treatment response"},
+    "CYP3A5|*3": {"gnomad_sas_af": 0.685, "gnomad_nfe_af": 0.942, "description": "CYP3A5 expresser *3 - lower in SAS"},
+    "CYP2B6|*6": {"gnomad_sas_af": 0.248, "gnomad_nfe_af": 0.198, "description": "CYP2B6 efavirenz *6 - enriched in South Asians"}
+  }
+}

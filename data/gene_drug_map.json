@@ -1,0 +1,129 @@
+{
+  "_metadata": {
+    "description": "Gene-level metadata used by the report generator, medications tab, and simplified star-allele caller. This file has no drug-level annotations in the underlying 1000 Genomes real-data pipeline, so drug/CPIC-level info here is sourced independently from CPIC.",
+    "source": "CPIC gene-drug pair table (cpicpgx.org) and PharmVar allele definitions (pharmvar.org).",
+    "caller_disclaimer": "The rsIDs listed here support ONLY the simplified demo star-allele caller in utils/star_allele_caller.py. They are not a complete or clinical-grade allele definition set; real star-allele calling requires the full PharmVar structural/haplotype definitions."
+  },
+  "genes": {
+    "CYP2C19": {
+      "full_name": "Cytochrome P450 2C19",
+      "drugs": ["clopidogrel", "omeprazole", "escitalopram", "voriconazole"],
+      "cpic_level": "1A",
+      "star_alleles": {
+        "*2": {"rsid": "rs4244285", "function": "no function"},
+        "*3": {"rsid": "rs4986893", "function": "no function"},
+        "*17": {"rsid": "rs12248560", "function": "increased function"}
+      }
+    },
+    "CYP2D6": {
+      "full_name": "Cytochrome P450 2D6",
+      "drugs": ["codeine", "tramadol", "tamoxifen", "haloperidol"],
+      "cpic_level": "1A",
+      "star_alleles": {
+        "*2": {"rsid": "rs16947", "function": "normal function"},
+        "*4": {"rsid": "rs3892097", "function": "no function"},
+        "*5": {"rsid": "CYP2D6 whole-gene deletion", "function": "no function"},
+        "*10": {"rsid": "rs1065852", "function": "decreased function"},
+        "*41": {"rsid": "rs28371725", "function": "decreased function"}
+      }
+    },
+    "CYP2C9": {
+      "full_name": "Cytochrome P450 2C9",
+      "drugs": ["warfarin", "phenytoin", "ibuprofen"],
+      "cpic_level": "1A",
+      "star_alleles": {
+        "*2": {"rsid": "rs1799853", "function": "decreased function"},
+        "*3": {"rsid": "rs1057910", "function": "decreased function"}
+      }
+    },
+    "SLCO1B1": {
+      "full_name": "Solute Carrier Organic Anion Transporter 1B1",
+      "drugs": ["simvastatin", "atorvastatin", "rosuvastatin"],
+      "cpic_level": "1A",
+      "star_alleles": {
+        "*5": {"rsid": "rs4149056", "function": "decreased function"}
+      }
+    },
+    "TPMT": {
+      "full_name": "Thiopurine S-Methyltransferase",
+      "drugs": ["azathioprine", "mercaptopurine", "thioguanine"],
+      "cpic_level": "1A",
+      "star_alleles": {
+        "*3A": {"rsid": "rs1800460 + rs1142345", "function": "no function"},
+        "*3C": {"rsid": "rs1142345", "function": "no function"}
+      }
+    },
+    "DPYD": {
+      "full_name": "Dihydropyrimidine Dehydrogenase",
+      "drugs": ["fluorouracil (5-FU)", "capecitabine", "tegafur"],
+      "cpic_level": "1A",
+      "india_relevance_note": "DPYD poor-metaboliser genotypes carry a life-threatening fluoropyrimidine toxicity risk (severe neutropenia, mucositis, potentially fatal). This is why Seed classifies DPYD/NUDT15/TPMT poor-metaboliser phenotypes as clinical significance class 3 (Urgent) rather than class 2.",
+      "star_alleles": {
+        "*2A": {"rsid": "rs3918290", "function": "no function"},
+        "*13": {"rsid": "rs55886062", "function": "no function"},
+        "HapB3": {"rsid": "rs56038477", "function": "decreased function"}
+      }
+    },
+    "NUDT15": {
+      "full_name": "Nudix Hydrolase 15",
+      "drugs": ["azathioprine", "mercaptopurine", "thioguanine"],
+      "cpic_level": "1A",
+      "india_relevance_note": "NUDT15 poor-metaboliser status is a major, often-underscreened cause of severe thiopurine-induced myelosuppression in South/East Asian patients; CPIC recommends genotyping alongside TPMT before starting thiopurines.",
+      "star_alleles": {
+        "*3": {"rsid": "rs116855232", "function": "no function"}
+      }
+    },
+    "UGT1A1": {
+      "full_name": "UDP Glucuronosyltransferase Family 1 Member A1",
+      "drugs": ["irinotecan", "atazanavir"],
+      "cpic_level": "1A",
+      "star_alleles": {
+        "*28": {"rsid": "rs8175347", "function": "decreased function"},
+        "*6": {"rsid": "rs4148323", "function": "decreased function"},
+        "*37": {"rsid": "rs387906243", "function": "decreased function"}
+      }
+    },
+    "CYP3A5": {
+      "full_name": "Cytochrome P450 3A5",
+      "drugs": ["tacrolimus"],
+      "cpic_level": "1A",
+      "star_alleles": {
+        "*3": {"rsid": "rs776746", "function": "no function"}
+      }
+    },
+    "ABCG2": {
+      "full_name": "ATP Binding Cassette Subfamily G Member 2",
+      "drugs": ["rosuvastatin", "allopurinol"],
+      "cpic_level": "2A",
+      "star_alleles": {
+        "rs2231142": {"rsid": "rs2231142", "function": "decreased function"}
+      }
+    },
+    "CYP2B6": {
+      "full_name": "Cytochrome P450 2B6",
+      "drugs": ["efavirenz", "bupropion", "methadone"],
+      "cpic_level": "1A",
+      "star_alleles": {
+        "*6": {"rsid": "rs3745274", "function": "decreased function"}
+      }
+    },
+    "IFNL3": {
+      "full_name": "Interferon Lambda 3 (IL28B)",
+      "drugs": ["peginterferon alfa + ribavirin"],
+      "cpic_level": "2A",
+      "india_relevance_note": "IFNL3 genotype (rs12979860) predicts response to interferon-based hepatitis C therapy; less relevant with modern direct-acting antivirals but retained here for completeness of the CPIC gene panel used to build Seed's training set.",
+      "star_alleles": {
+        "rs12979860": {"rsid": "rs12979860", "function": "unfavorable response (T allele)"}
+      }
+    },
+    "VKORC1": {
+      "full_name": "Vitamin K Epoxide Reductase Complex Subunit 1",
+      "drugs": ["warfarin"],
+      "cpic_level": "1A",
+      "india_relevance_note": "VKORC1 is included in the CPIC gene panel Seed targets, but has zero usable training records in this dataset's South Asian subset -- every SAS VKORC1 call here is phenotype 'Indeterminate'. Seed discloses this rather than fabricating a score, and excludes VKORC1 from the app's selectable gene list until real SAS phenotype data becomes available.",
+      "star_alleles": {
+        "rs9923231": {"rsid": "rs9923231", "function": "decreased function (warfarin sensitivity)"}
+      }
+    }
+  }
+}
