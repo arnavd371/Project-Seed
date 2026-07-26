@@ -2,7 +2,7 @@
 
 ---
 
-## Opening (0:00–0:20)
+## Opening (0:00-0:20)
 
 > "This is Seed - बीज - the first pharmacogenomics tool calibrated to Indian genomic data. Standard tools use European genomes. For 1.4 billion South Asians, the same gene and genotype can mean different prescribing risk. Seed re-calibrates CPIC using real 1000 Genomes South Asian data - fully offline, no LLM, no API keys."
 
@@ -10,7 +10,7 @@
 
 ---
 
-## Scenario 1: CYP2C19 *1/*2 - Clopidogrel (0:20–1:20)
+## Scenario 1: CYP2C19 *1/*2 - Clopidogrel (0:20-1:20)
 
 **Tab:** Analyse
 
@@ -27,7 +27,7 @@
 
 ---
 
-## Scenario 2: DPYD Poor Metabolizer - URGENT (1:20–2:00)
+## Scenario 2: DPYD Poor Metabolizer - URGENT (1:20-2:00)
 
 **Tab:** Demo Walkthrough → select **DPYD Poor Metabolizer**
 
@@ -39,7 +39,7 @@
 
 ---
 
-## Simulations & SAS vs EUR (2:00–2:30)
+## Simulations & SAS vs EUR (2:00-2:30)
 
 **Tab:** Simulations
 
@@ -50,7 +50,7 @@
 
 ---
 
-## Model Performance & Honesty (2:30–2:50)
+## Model Performance & Honesty (2:30-2:50)
 
 **Tab:** Model Performance
 
@@ -63,7 +63,7 @@
 
 ---
 
-## Close (2:50–3:00)
+## Close (2:50-3:00)
 
 > "Seed is open source, runs offline on any laptop, supports Hindi summaries, and is ready for Streamlit Cloud deploy. Decision support only - always consult a clinician. GitHub link in the sidebar."
 

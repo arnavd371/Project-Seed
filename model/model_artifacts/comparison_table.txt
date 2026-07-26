@@ -13,7 +13,7 @@ OVERFITTING DIAGNOSIS (train acc − grouped-CV acc, threshold 0.10)
   Population-Only ML: train=0.905  cv=0.589  gap=0.316  [FLAGGED]
   India Calibrated: train=0.970  cv=0.964  gap=0.006  [OK]
 
-RISK REGRESSOR (continuous 0–1 India risk score)
+RISK REGRESSOR (continuous 0-1 India risk score)
   Rule-adjusted MAE:    0.0000
   Simple heuristic MAE: 0.0905
   XGBRegressor MAE:     0.0100  R²=0.9852

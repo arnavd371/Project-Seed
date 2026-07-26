@@ -356,7 +356,7 @@ def render_analyse_tab(scorer):
             "Evidence trail",
             f"n = {result['n_real_individuals']} real SAS individuals · "
             f"SAS freq = {result['india_diplotype_freq']:.4f} "
-            f"(95% CI {result['india_freq_ci_low']:.4f}–{result['india_freq_ci_high']:.4f}) · "
+            f"(95% CI {result['india_freq_ci_low']:.4f}-{result['india_freq_ci_high']:.4f}) · "
             f"EUR freq = {result['european_diplotype_freq']:.4f} · "
             f"SAS/EUR ratio = {result['sas_vs_eur_ratio']:.2f} · "
             f"Phenotype: {result['phenotype']}",
@@ -371,7 +371,7 @@ def render_analyse_tab(scorer):
         st.markdown(
             f'<div class="pi-box" style="text-align:center;">'
             f'<div class="pi-stat-num">{result["india_risk_score"]:.2f}</div>'
-            f'<div class="pi-box-meta">India-calibrated risk score (0.0 – 1.0)</div></div>',
+            f'<div class="pi-box-meta">India-calibrated risk score (0.0 - 1.0)</div></div>',
             unsafe_allow_html=True,
         )
         d1, d2, d3 = st.columns(3)
@@ -536,7 +536,7 @@ def render_model_performance_tab():
 
         risk = comp.get("risk_regressor")
         if risk:
-            st.markdown("#### Risk Regressor (continuous 0–1 score)")
+            st.markdown("#### Risk Regressor (continuous 0-1 score)")
             rc1, rc2, rc3, rc4 = st.columns(4)
             rc1.metric("Rule-adjusted MAE", f"{risk.get('rule_adjusted_mae', '-')}")
             rc2.metric("Heuristic MAE", f"{risk['heuristic_mae']:.4f}")
@@ -954,18 +954,18 @@ def render_methods_tab():
             "Dataset",
             "Parsed from 1000 Genomes Project phase 3 (Sherman, Claw & Lee, Sci Rep 2024). "
             "Filtered to SAS superpopulation (GIH, PJL, ITU, STU, BEB): 489 individuals, "
-            "6,035 gene–genotype rows, 168 unique (gene, genotype) groups. CPIC-actionable genes only "
+            "6,035 gene-genotype rows, 168 unique (gene, genotype) groups. CPIC-actionable genes only "
             "(includes F5; CACNA1S/RYR1 excluded - Uncertain Susceptibility only). "
             "Indeterminate phenotypes removed. VKORC1 excluded.",
         ),
         (
             "Labels",
-            "Clinical significance classes 0–3 derived from CPIC phenotype strings: "
+            "Clinical significance classes 0-3 derived from CPIC phenotype strings: "
             "0 = No Action, 1 = Moderate, 2 = Significant, 3 = Urgent (DPYD/NUDT15/TPMT poor metaboliser).",
         ),
         (
             "Cross-validation",
-            "StratifiedGroupKFold grouped by gene|genotype (k=4–5 adaptive). "
+            "StratifiedGroupKFold grouped by gene|genotype (k=4-5 adaptive). "
             "Plain row-level k-fold was rejected after discovering duplicate-genotype leakage "
             "that inflated accuracy to ~100%.",
         ),

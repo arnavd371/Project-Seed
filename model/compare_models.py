@@ -114,7 +114,7 @@ def build_table(baseline, rule, population_only, calibration, risk, loso, overfi
             f"gap={d.get('accuracy_gap', '?'):.3f}  [{flag}]"
         )
     lines.append("")
-    lines.append("RISK REGRESSOR (continuous 0–1 India risk score)")
+    lines.append("RISK REGRESSOR (continuous 0-1 India risk score)")
     lines.append(f"  Rule-adjusted MAE:    {risk.get('rule_adjusted_mae', risk.get('heuristic_mae', 0)):.4f}")
     lines.append(f"  Simple heuristic MAE: {risk['heuristic_mae']:.4f}")
     lines.append(f"  XGBRegressor MAE:     {risk['ml_mae']:.4f}  R²={risk['ml_r2']:.4f}")

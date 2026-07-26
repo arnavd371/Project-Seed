@@ -34,7 +34,7 @@ For a given gene + genotype, Seed reports:
    SAS-vs-EUR ratio, and gene-importance features) - both trained on the
    *exact same real SAS individuals*, so the only difference is which
    population signal each model is allowed to see.
-3. A continuous **India Risk Score** (0.0–1.0) and its delta from the
+3. A continuous **India Risk Score** (0.0-1.0) and its delta from the
    baseline score, so the population-specific contribution is visible as a
    number, not just a category.
 
@@ -102,7 +102,7 @@ Performance tab - nowhere is it silently rounded up to "high confidence."
 `cpic_phenotype_score` (a feature both models share) are both deterministic
 functions of the **same underlying CPIC `Phenotype` string** in the source
 data (see `data/parse_real_data.py`'s `PHENOTYPE_MAP` / `CPIC_SCORE_MAP`).
-That means this specific 0–3 classification task is largely solvable from
+That means this specific 0-3 classification task is largely solvable from
 CPIC score plus gene identity alone, **with or without any population
 frequency information** - so the accuracy delta between the Global
 Baseline and India-Calibrated models is small (in our runs, ~0.00) and
