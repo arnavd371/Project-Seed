@@ -4,53 +4,333 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Seed | बीज</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
-    :root { --cream:#F5F4EF; --ink:#1a1a1a; --muted:#666; --card:#fff; --border:#000; }
+    :root {
+      --bg: #F5F4EF;
+      --fg: #000000;
+      --muted: #686868;
+      --border: #000000;
+      --hairline: rgba(0,0,0,0.12);
+      --card: #F5F4EF;
+      --urgent-bg: #f0ece4;
+      --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
     * { box-sizing: border-box; }
-    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
-      background: linear-gradient(180deg,#F5F4EF 0%, #ebe8df 100%); color: var(--ink); }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-    .hero { text-align:center; padding: 2rem 0 1rem; }
-    .hero h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); margin:0; letter-spacing:-.03em; }
-    .hero .sub { color: var(--muted); margin-top:.4rem; font-size:1.15rem; }
-    .hero .tag { margin-top:.85rem; font-size:1.05rem; line-height:1.5; }
-    .nav { display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center; margin:1.5rem 0 2rem; }
-    .nav button { border:2px solid var(--border); background:var(--card); padding:.45rem .85rem;
-      font: inherit; cursor:pointer; box-shadow:3px 3px 0 var(--border); }
-    .nav button.active, .nav button:hover { background:#000; color:#fff; }
-    .card { background:var(--card); border:2px solid var(--border); box-shadow:4px 4px 0 var(--border);
-      padding:1.15rem 1.25rem; margin:1rem 0; }
-    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.75rem; margin:1.25rem 0; }
-    .stat { background:var(--card); border:2px solid var(--border); padding:1rem; text-align:center; box-shadow:3px 3px 0 var(--border); }
-    .stat .n { font-size:1.7rem; font-weight:700; }
-    .stat .l { font-size:.8rem; color:var(--muted); margin-top:.25rem; }
-    label { display:block; font-weight:600; margin:.75rem 0 .35rem; }
-    select, button.primary { font: inherit; }
-    select { width:100%; padding:.65rem .7rem; border:2px solid var(--border); background:#fff; }
-    button.primary { border:2px solid var(--border); background:#000; color:#fff; padding:.7rem 1.1rem; cursor:pointer; box-shadow:3px 3px 0 #444; }
-    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-    @media (max-width:720px){ .grid2{ grid-template-columns:1fr; } }
-    .urgency-0{ border-left:8px solid #6b7280; } .urgency-1{ border-left:8px solid #ca8a04; }
-    .urgency-2{ border-left:8px solid #ea580c; } .urgency-3{ border-left:8px solid #dc2626; }
-    table { width:100%; border-collapse:collapse; font-size:.92rem; }
-    th, td { border-bottom:1px solid #ddd; padding:.45rem .3rem; text-align:left; vertical-align:top; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: rgba(0,0,0,0.12); }
+
+    .shell {
+      padding: 1rem;
+      overflow-x: hidden;
+    }
+    @media (min-width: 768px) {
+      .shell { padding: 3rem; }
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 42rem;
+    }
+    .wrap.wide { max-width: 52rem; }
+
+    header.top {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    @media (min-width: 768px) {
+      header.top {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .brand {
+      font-family: var(--font-serif);
+      font-size: 1.875rem;
+      font-weight: 400;
+      color: var(--fg);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .brand .hi {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: block;
+      margin-top: 0.2rem;
+    }
+
+    nav.links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem 1.15rem;
+    }
+    nav.links button {
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--fg);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: rgba(0,0,0,0.25);
+    }
+    nav.links button:hover,
+    nav.links button.active {
+      text-decoration-color: var(--fg);
+    }
+
+    .lede {
+      max-width: 36rem;
+      margin: 0 0 1.75rem;
+      color: var(--fg);
+    }
+
+    .pi-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 5px 5px 0 0 var(--border);
+      padding: 0.85rem 1rem;
+      margin: 0 0 1rem;
+    }
+    .pi-box h2, .pi-box h3 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: 1.05rem;
+      margin: 0 0 0.45rem;
+      letter-spacing: -0.01em;
+    }
+    .pi-box-title {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    .pi-box-meta {
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 1.25rem 0 0;
+      padding-left: 1.25rem;
+      border-left: 1px solid var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      margin: 0 0 1.25rem;
+      padding-left: 0.35rem;
+    }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -1.25rem;
+      top: 0.45rem;
+      width: 7px;
+      height: 7px;
+      background: var(--fg);
+      transform: translateX(-50%);
+    }
+    .timeline-item.featured {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 5px 5px 0 0 var(--border);
+      padding: 0.85rem 1rem;
+      margin-left: 0.15rem;
+    }
+    .timeline-item.featured::before {
+      left: calc(-1.25rem - 0.15rem);
+    }
+    .timeline-title {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      margin: 0;
+    }
+    .timeline-meta {
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin: 1.25rem 0;
+    }
+    @media (min-width: 640px) {
+      .stats { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 3px 3px 0 0 var(--border);
+      padding: 0.85rem;
+      text-align: left;
+    }
+    .stat .n {
+      font-family: var(--font-mono);
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+    .stat .l {
+      color: var(--muted);
+      font-size: 0.7rem;
+      margin-top: 0.2rem;
+      line-height: 1.4;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+    @media (min-width: 720px) {
+      .grid2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    label {
+      display: block;
+      margin: 0.85rem 0 0.3rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+    select {
+      width: 100%;
+      font: inherit;
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 0.55rem 0.65rem;
+      box-shadow: 3px 3px 0 0 var(--border);
+    }
+    select:focus {
+      outline: none;
+      box-shadow: 2px 2px 0 0 var(--border);
+    }
+
+    button.primary {
+      font: inherit;
+      color: #fff;
+      background: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 0.55rem 0.95rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 0 var(--border);
+    }
+    button.primary:hover {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 0 var(--border);
+    }
+    button.linkish {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--fg);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: rgba(0,0,0,0.25);
+    }
+    button.linkish:hover { text-decoration-color: var(--fg); }
+
+    .urgency-0 { border-left: 4px solid #4a7c59; }
+    .urgency-1 { border-left: 4px solid #9a7b2e; }
+    .urgency-2 { border-left: 4px solid #a84848; }
+    .urgency-3 { border-left: 4px solid var(--fg); background: var(--urgent-bg); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+    }
+    th, td {
+      border-bottom: 1px solid var(--hairline);
+      padding: 0.4rem 0.25rem;
+      text-align: left;
+      vertical-align: top;
+      font-size: 0.8rem;
+    }
+    th {
+      color: var(--muted);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+
     .muted { color: var(--muted); }
-    .footer { margin-top:2.5rem; color:var(--muted); font-size:.85rem; text-align:center; }
-    pre { white-space:pre-wrap; font-size:.9rem; }
-    .hidden { display:none; }
-    .err { color:#b91c1c; }
+    .section-label {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin: 1.5rem 0 0.75rem;
+    }
+    pre {
+      white-space: pre-wrap;
+      margin: 0;
+      font: inherit;
+      line-height: 1.7;
+    }
+    .footer {
+      margin-top: 2.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--hairline);
+      color: var(--muted);
+      font-size: 0.75rem;
+      max-width: 36rem;
+    }
+    .err { color: #a84848; }
+    a.inline {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(0,0,0,0.25);
+    }
+    a.inline:hover { text-decoration-color: var(--fg); }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="hero">
-      <h1>🌱 Seed</h1>
-      <div class="sub">बीज</div>
-      <div class="tag">India-calibrated pharmacogenomics.<br>Because Indian genes are not European genes.</div>
+  <div class="shell">
+    <div class="wrap wide" id="frame">
+      <header class="top">
+        <a class="brand" href="#" id="brand">
+          Seed
+          <span class="hi">बीज · India-calibrated pharmacogenomics</span>
+        </a>
+        <nav class="links" id="nav"></nav>
+      </header>
+      <div id="app"><p class="muted">Loading…</p></div>
+      <div class="footer">
+        Decision support only · not a diagnostic device · Open source ·
+        Precomputed from real 1000 Genomes SAS models ·
+        <a class="inline" href="https://github.com/arnavd371/Project-Seed" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
     </div>
-    <nav class="nav" id="nav"></nav>
-    <div id="app"><p class="muted">Loading Seed data…</p></div>
-    <div class="footer">Decision support only · not a diagnostic device · Open source · Precomputed from real 1000 Genomes SAS models</div>
   </div>
   <script>
     const PAGES = ["home","analyse","performance","impact","ai","technical"];
@@ -70,35 +350,53 @@
       DATA = await res.json();
       const genes = Object.keys(DATA.genes).sort();
       state.gene = genes[0];
-      const gts = Object.keys(DATA.genes[state.gene]);
-      state.genotype = gts[0];
+      state.genotype = Object.keys(DATA.genes[state.gene])[0];
+      document.getElementById("brand").onclick = (e) => {
+        e.preventDefault();
+        state.page = "home";
+        state.result = null;
+        renderNav();
+        render();
+      };
       renderNav();
       render();
     }
 
+    function label(p) {
+      return ({
+        home: "Home",
+        analyse: "Analyse",
+        performance: "Research",
+        impact: "Impact",
+        ai: "Innovation",
+        technical: "Technical",
+      })[p];
+    }
+
     function renderNav() {
       const nav = document.getElementById("nav");
-      nav.innerHTML = PAGES.map(p =>
-        `<button data-page="${p}" class="${state.page===p?"active":""}">${label(p)}</button>`
+      nav.innerHTML = PAGES.map((p) =>
+        `<button data-page="${p}" class="${state.page === p ? "active" : ""}">${label(p)}</button>`
       ).join("");
-      nav.querySelectorAll("button").forEach(btn => btn.onclick = () => {
-        state.page = btn.dataset.page;
-        if (state.page !== "analyse") state.result = null;
-        renderNav(); render();
+      nav.querySelectorAll("button").forEach((btn) => {
+        btn.onclick = () => {
+          state.page = btn.dataset.page;
+          if (state.page !== "analyse") state.result = null;
+          renderNav();
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
       });
     }
 
-    function label(p) {
-      return ({home:"Home", analyse:"Analyse", performance:"Model Performance", impact:"Impact", ai:"AI Innovation", technical:"Technical"})[p];
-    }
-
     function esc(s) {
-      return String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      return String(s ?? "").replace(/[&<>"']/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+      );
     }
 
     function render() {
-      const el = document.getElementById("app");
-      el.innerHTML = ({
+      document.getElementById("app").innerHTML = ({
         home: renderHome,
         analyse: renderAnalyse,
         performance: renderPerf,
@@ -111,154 +409,221 @@
 
     function renderHome() {
       return `
-        <div class="card"><p>Standard pharmacogenomic tools are calibrated on European allele frequencies.
-        Seed is trained on real 1000 Genomes Project South Asian genomes and reports honest grouped
-        cross-validation metrics with every frequency traceable to observed individuals.</p></div>
+        <p class="lede">
+          Standard pharmacogenomic tools are calibrated on European allele frequencies.
+          Seed is trained on real 1000 Genomes Project South Asian genomes and reports
+          honest grouped cross-validation metrics - every frequency traceable to observed individuals.
+        </p>
         <div class="stats">
           <div class="stat"><div class="n">6,035</div><div class="l">Real SAS individual rows</div></div>
           <div class="stat"><div class="n">489</div><div class="l">South Asian genomes</div></div>
           <div class="stat"><div class="n">168</div><div class="l">Unique gene-genotype groups</div></div>
           <div class="stat"><div class="n">0</div><div class="l">Synthetic / SMOTE rows</div></div>
         </div>
-        <p style="text-align:center;margin-top:1.5rem;">
-          <button class="primary" id="go-analyse">Enter Seed → Analyse</button>
-        </p>`;
+        <div class="timeline">
+          <div class="timeline-item featured">
+            <p class="timeline-title">Analyse a real SAS genotype</p>
+            <p class="timeline-meta">CYP2C19 · DPYD · NUDT15 · and 168 observed groups</p>
+            <p>Compare Calibration ML, population-only ML, and European baseline on the same genotype.</p>
+            <p style="margin-top:0.75rem;"><button class="linkish" id="go-analyse">Enter Analyse →</button></p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-title">Research notes</p>
+            <p class="timeline-meta">Grouped CV · gene holdout · honest metrics</p>
+            <p class="muted">Population-only ~59% vs calibrated ~96% on group-level accuracy.</p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-title">Offline by design</p>
+            <p class="timeline-meta">No LLM · no API keys · open source</p>
+            <p class="muted">This hosted demo serves precomputed model outputs for submission and review.</p>
+          </div>
+        </div>`;
     }
 
     function renderAnalyse() {
       const genes = Object.keys(DATA.genes).sort();
-      const gts = Object.keys(DATA.genes[state.gene] || {}).sort((a,b) =>
-        (DATA.genes[state.gene][b].n_real_individuals||0) - (DATA.genes[state.gene][a].n_real_individuals||0)
+      const gts = Object.keys(DATA.genes[state.gene] || {}).sort(
+        (a, b) =>
+          (DATA.genes[state.gene][b].n_real_individuals || 0) -
+          (DATA.genes[state.gene][a].n_real_individuals || 0)
       );
-      const geneOpts = genes.map(g => `<option value="${esc(g)}" ${g===state.gene?"selected":""}>${esc(g)}</option>`).join("");
-      const gtOpts = gts.map(gt => {
-        const n = DATA.genes[state.gene][gt].n_real_individuals;
-        return `<option value="${esc(gt)}" ${gt===state.genotype?"selected":""}>${esc(gt)} · ${n} real individuals</option>`;
-      }).join("");
+      const geneOpts = genes
+        .map((g) => `<option value="${esc(g)}" ${g === state.gene ? "selected" : ""}>${esc(g)}</option>`)
+        .join("");
+      const gtOpts = gts
+        .map((gt) => {
+          const n = DATA.genes[state.gene][gt].n_real_individuals;
+          return `<option value="${esc(gt)}" ${gt === state.genotype ? "selected" : ""}>${esc(gt)} · ${n} real individuals</option>`;
+        })
+        .join("");
       return `
-        <div class="card">
-          <h2>Analyse genotype</h2>
-          <p class="muted">Only genotypes observed in real 1000 Genomes SAS data are listed.</p>
+        <p class="lede">Only genotypes observed in real 1000 Genomes SAS data are listed.</p>
+        <div class="pi-box">
+          <div class="pi-box-title">Analyse genotype</div>
           <label for="gene">Gene</label>
           <select id="gene">${geneOpts}</select>
           <label for="genotype">Genotype</label>
           <select id="genotype">${gtOpts}</select>
-          <p style="margin-top:1rem;"><button class="primary" id="run">Analyse Genotype</button></p>
+          <button class="primary" id="run">Analyse Genotype</button>
         </div>
         <div id="result">${state.result ? renderResult(state.result) : ""}</div>`;
     }
 
     function renderResult(r) {
       const cls = r.observed_clinical_significance;
-      const pops = DATA.meta.sas_populations.map(p => {
-        const v = r.population_breakdown[p];
-        const name = DATA.meta.sas_population_names[p];
-        return `<tr><td>${esc(name)}</td><td>${esc(p)}</td><td>${v==null?"N/A":v+"%"}</td></tr>`;
-      }).join("");
-      const drugs = (r.drugs||[]).map(d => `<tr><td>${esc(d)}</td><td>${esc(r.observed_clinical_significance_label)}</td></tr>`).join("")
-        || `<tr><td colspan="2">No CPIC drug associations on file for this gene.</td></tr>`;
+      const pops = DATA.meta.sas_populations
+        .map((p) => {
+          const v = r.population_breakdown[p];
+          const name = DATA.meta.sas_population_names[p];
+          return `<tr><td>${esc(name)}</td><td>${esc(p)}</td><td>${v == null ? "N/A" : v + "%"}</td></tr>`;
+        })
+        .join("");
+      const drugs =
+        (r.drugs || [])
+          .map(
+            (d) =>
+              `<tr><td>${esc(d)}</td><td>${esc(r.observed_clinical_significance_label)}</td></tr>`
+          )
+          .join("") ||
+        `<tr><td colspan="2">No CPIC drug associations on file for this gene.</td></tr>`;
       const popOnly = r.population_only_predicted_label
-        ? `${esc(r.population_only_predicted_label)} (${(r.population_only_confidence*100).toFixed(1)}%)`
+        ? `${esc(r.population_only_predicted_label)} (${(r.population_only_confidence * 100).toFixed(1)}%)`
         : "N/A";
       return `
-        <div class="card urgency-${cls}">
-          <h2>${esc(urgencyText[cls])}</h2>
-          <p class="muted">${esc(r.gene)} ${esc(r.genotype)} → ${esc(r.phenotype)} (${esc(r.observed_clinical_significance_label)})</p>
+        <div class="pi-box urgency-${cls}">
+          <div class="pi-box-title">${esc(urgencyText[cls])}</div>
+          <div class="pi-box-meta">${esc(r.gene)} ${esc(r.genotype)} → ${esc(r.phenotype)} (${esc(r.observed_clinical_significance_label)})</div>
         </div>
         <div class="grid2">
-          <div class="card"><h3>Calibration ML</h3><p><strong>${esc(r.india_predicted_label)}</strong> (${(r.india_confidence*100).toFixed(1)}%)</p></div>
-          <div class="card"><h3>Global baseline</h3><p><strong>${esc(r.baseline_predicted_label)}</strong> (${(r.baseline_confidence*100).toFixed(1)}%)</p></div>
-          <div class="card"><h3>Population-only ML</h3><p><strong>${popOnly}</strong></p></div>
-          <div class="card"><h3>Frequencies</h3>
-            <p>SAS: ${Number(r.india_diplotype_freq).toFixed(4)}<br>
-               EUR: ${Number(r.european_diplotype_freq).toFixed(4)}<br>
-               SAS/EUR: ${Number(r.sas_vs_eur_ratio).toFixed(2)}<br>
-               n = ${r.n_real_individuals} real SAS individuals</p></div>
+          <div class="pi-box"><div class="pi-box-title">Calibration ML</div><strong>${esc(r.india_predicted_label)}</strong> (${(r.india_confidence * 100).toFixed(1)}%)</div>
+          <div class="pi-box"><div class="pi-box-title">Global baseline</div><strong>${esc(r.baseline_predicted_label)}</strong> (${(r.baseline_confidence * 100).toFixed(1)}%)</div>
+          <div class="pi-box"><div class="pi-box-title">Population-only ML</div><strong>${popOnly}</strong></div>
+          <div class="pi-box"><div class="pi-box-title">Frequencies</div>
+            SAS ${Number(r.india_diplotype_freq).toFixed(4)} ·
+            EUR ${Number(r.european_diplotype_freq).toFixed(4)} ·
+            SAS/EUR ${Number(r.sas_vs_eur_ratio).toFixed(2)} ·
+            n = ${r.n_real_individuals}
+          </div>
         </div>
-        <div class="card"><h3>SAS subpopulation breakdown</h3>
-          <table><thead><tr><th>Subpopulation</th><th>Code</th><th>% carrying</th></tr></thead><tbody>${pops}</tbody></table></div>
-        <div class="card"><h3>Clinical interpretation</h3>
-          <p><strong>${esc(r.gene)}</strong> (${esc(r.full_name)}) - CPIC evidence level <strong>${esc(r.cpic_level)}</strong>.
-          Phenotype: <strong>${esc(r.phenotype)}</strong>.</p>
+        <div class="pi-box">
+          <div class="pi-box-title">SAS subpopulation breakdown</div>
+          <table><thead><tr><th>Subpopulation</th><th>Code</th><th>% carrying</th></tr></thead><tbody>${pops}</tbody></table>
+        </div>
+        <div class="pi-box">
+          <div class="pi-box-title">Clinical interpretation</div>
+          <p><strong>${esc(r.gene)}</strong> (${esc(r.full_name)}) · CPIC ${esc(r.cpic_level)} · phenotype <strong>${esc(r.phenotype)}</strong></p>
           <table><thead><tr><th>Affected drug</th><th>Significance</th></tr></thead><tbody>${drugs}</tbody></table>
-          ${r.india_relevance_note ? `<p><strong>India-specific note:</strong> ${esc(r.india_relevance_note)}</p>` : ""}
+          ${r.india_relevance_note ? `<p style="margin-top:0.75rem;"><span class="muted">India-specific note</span><br>${esc(r.india_relevance_note)}</p>` : ""}
         </div>
-        <div class="card"><h3>Hindi summary</h3><pre>${esc(r.hindi_summary)}</pre></div>`;
+        <div class="pi-box">
+          <div class="pi-box-title">Hindi summary</div>
+          <pre>${esc(r.hindi_summary)}</pre>
+        </div>`;
     }
 
     function bindAnalyse() {
       const go = document.getElementById("go-analyse");
-      if (go) go.onclick = () => { state.page = "analyse"; renderNav(); render(); };
+      if (go)
+        go.onclick = () => {
+          state.page = "analyse";
+          renderNav();
+          render();
+        };
       const gene = document.getElementById("gene");
       const gt = document.getElementById("genotype");
       const run = document.getElementById("run");
-      if (gene) gene.onchange = () => {
-        state.gene = gene.value;
-        state.genotype = Object.keys(DATA.genes[state.gene])[0];
-        state.result = null;
-        render();
-      };
+      if (gene)
+        gene.onchange = () => {
+          state.gene = gene.value;
+          state.genotype = Object.keys(DATA.genes[state.gene])[0];
+          state.result = null;
+          render();
+        };
       if (gt) gt.onchange = () => { state.genotype = gt.value; };
-      if (run) run.onclick = () => {
-        state.gene = gene.value;
-        state.genotype = gt.value;
-        state.result = DATA.genes[state.gene][state.genotype];
-        render();
-        document.getElementById("result")?.scrollIntoView({behavior:"smooth"});
-      };
+      if (run)
+        run.onclick = () => {
+          state.gene = gene.value;
+          state.genotype = gt.value;
+          state.result = DATA.genes[state.gene][state.genotype];
+          render();
+          document.getElementById("result")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
     }
 
     function metric(key, name) {
       const b = DATA.comparison[key] || {};
-      return `<tr><td>${esc(name)}</td><td>${b.accuracy ?? "-"}</td><td>${b.macro_f1 ?? "-"}</td></tr>`;
+      return `<tr><td>${esc(name)}</td><td>${b.accuracy ?? "—"}</td><td>${b.macro_f1 ?? "—"}</td></tr>`;
     }
 
     function renderPerf() {
-      return `<div class="card"><h2>Model performance</h2>
-        <p class="muted">Group-level metrics - each genotype counts once.</p>
-        <table><thead><tr><th>Model</th><th>Accuracy</th><th>Macro F1</th></tr></thead>
-        <tbody>
-          ${metric("rule_baseline","Rule baseline")}
-          ${metric("population_only","Population-only ML")}
-          ${metric("india_calibrated","Calibration ML")}
-          ${metric("baseline","Global baseline ML")}
-        </tbody></table></div>`;
+      return `
+        <p class="lede">Group-level metrics - each genotype counts once. Plain row-level CV was rejected after duplicate-genotype leakage.</p>
+        <div class="pi-box">
+          <div class="pi-box-title">Model comparison</div>
+          <table>
+            <thead><tr><th>Model</th><th>Accuracy</th><th>Macro F1</th></tr></thead>
+            <tbody>
+              ${metric("rule_baseline", "Rule baseline")}
+              ${metric("population_only", "Population-only ML")}
+              ${metric("india_calibrated", "Calibration ML")}
+              ${metric("baseline", "Global baseline ML")}
+            </tbody>
+          </table>
+        </div>`;
     }
 
     function renderImpact() {
-      const cites = DATA.content.citations.map(c =>
-        `<div class="card"><strong>[${c.id}]</strong> ${esc(c.text)}<br><span class="muted">${esc(c.source||"")}</span></div>`
-      ).join("");
-      const sdg = DATA.content.sdg.map(s => `<tr><td>${esc(s.sdg)}</td><td>${esc(s.mapping)}</td></tr>`).join("");
-      const aud = DATA.content.audience.map(a => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`).join("");
-      const acc = DATA.content.accessibility.map(a => `<li>${esc(a)}</li>`).join("");
-      return `<div class="card"><h2>Impact &amp; Inclusion</h2>
-        <p>Genomic tools trained on European cohorts can mis-estimate prescribing risk for ~1.4B South Asians.</p></div>
-        <h3>Evidence</h3>${cites}
-        <div class="card"><h3>Target audience</h3><table><tbody>${aud}</tbody></table></div>
-        <div class="card"><h3>SDG mapping</h3><table><tbody>${sdg}</tbody></table></div>
-        <div class="card"><h3>Accessibility</h3><ul>${acc}</ul></div>`;
+      const cites = DATA.content.citations
+        .map(
+          (c) => `
+          <div class="timeline-item featured">
+            <p class="timeline-title">[${c.id}] ${esc(c.text)}</p>
+            <p class="timeline-meta">${esc(c.source || "")}</p>
+          </div>`
+        )
+        .join("");
+      const sdg = DATA.content.sdg
+        .map((s) => `<tr><td>${esc(s.sdg)}</td><td>${esc(s.mapping)}</td></tr>`)
+        .join("");
+      const aud = DATA.content.audience
+        .map((a) => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`)
+        .join("");
+      const acc = DATA.content.accessibility.map((a) => `<li>${esc(a)}</li>`).join("");
+      return `
+        <p class="lede">European-calibrated tools can mis-estimate prescribing risk for ~1.4B South Asians. Seed recalibrates CPIC context with real SAS allele-frequency structure.</p>
+        <div class="section-label">Evidence</div>
+        <div class="timeline">${cites}</div>
+        <div class="pi-box"><div class="pi-box-title">Target audience</div><table><tbody>${aud}</tbody></table></div>
+        <div class="pi-box"><div class="pi-box-title">SDG mapping</div><table><tbody>${sdg}</tbody></table></div>
+        <div class="pi-box"><div class="pi-box-title">Accessibility</div><ul>${acc}</ul></div>`;
     }
 
     function renderAI() {
-      const gtm = DATA.content.gtm.map(a => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`).join("");
-      const eth = DATA.content.ethics.map(a => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`).join("");
-      return `<div class="card"><h2>Why AI (not only rules)</h2><pre>${esc(DATA.content.why_ai)}</pre></div>
-        <div class="card"><h3>Go-to-market</h3><table><tbody>${gtm}</tbody></table></div>
-        <div class="card"><h3>Ethics &amp; privacy</h3><table><tbody>${eth}</tbody></table></div>`;
+      const gtm = DATA.content.gtm
+        .map((a) => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`)
+        .join("");
+      const eth = DATA.content.ethics
+        .map((a) => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`)
+        .join("");
+      return `
+        <div class="pi-box"><div class="pi-box-title">Why AI (not only rules)</div><pre>${esc(DATA.content.why_ai)}</pre></div>
+        <div class="pi-box"><div class="pi-box-title">Go-to-market</div><table><tbody>${gtm}</tbody></table></div>
+        <div class="pi-box"><div class="pi-box-title">Ethics &amp; privacy</div><table><tbody>${eth}</tbody></table></div>`;
     }
 
     function renderTech() {
-      const tech = Object.entries(DATA.content.tech).map(([k,v]) =>
-        `<tr><td>${esc(k)}</td><td>${esc(Array.isArray(v)?v.join(", "):v)}</td></tr>`
-      ).join("");
-      return `<div class="card"><h2>Technical</h2>
-        <p>Dual XGBoost classifiers on real SAS WGS-derived genotype groups.
-        This hosted demo serves precomputed model outputs for all 168 observed genotypes.</p>
-        <table><tbody>${tech}</tbody></table></div>`;
+      const tech = Object.entries(DATA.content.tech)
+        .map(
+          ([k, v]) =>
+            `<tr><td>${esc(k)}</td><td>${esc(Array.isArray(v) ? v.join(", ") : v)}</td></tr>`
+        )
+        .join("");
+      return `
+        <p class="lede">Dual XGBoost classifiers on real SAS WGS-derived genotype groups. This hosted page serves precomputed outputs for all 168 observed genotypes.</p>
+        <div class="pi-box"><div class="pi-box-title">Stack</div><table><tbody>${tech}</tbody></table></div>`;
     }
 
-    boot().catch(err => {
+    boot().catch((err) => {
       document.getElementById("app").innerHTML = `<p class="err">${esc(err.message)}</p>`;
     });
   </script>
