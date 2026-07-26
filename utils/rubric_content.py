@@ -2,7 +2,7 @@ CITATIONS = [
     {
         "id": 1,
         "text": "India represents ~17% of world population but <3% of genomic study participants.",
-        "source": "Sirugo G, Williams SM, Tishkoff SA. The Missing Diversity in Human Genetic Studies. Cell 2019;177(1):26–31.",
+        "source": "Sirugo G, Williams SM, Tishkoff SA. The Missing Diversity in Human Genetic Studies. Cell 2019;177(1):26-31.",
     },
     {
         "id": 2,
@@ -70,10 +70,10 @@ TECH_STACK = {
     "languages": ["Python 3.13"],
     "ml": ["XGBoost", "scikit-learn", "imbalanced-learn (evaluated, SMOTE rejected)"],
     "data": ["pandas", "numpy", "1000 Genomes Project combined.csv"],
-    "ui": ["Streamlit (custom PI-style CSS)", "Plotly", "Matplotlib"],
+    "ui": ["Custom Seed web UI (PI-inspired)", "Streamlit app (streamlit_app.py)", "Plotly/Matplotlib in full app"],
     "reporting": ["fpdf2 (PDF)", "algorithmic Hindi templates (no LLM)"],
     "hardware": "General-purpose laptop/desktop (Apple Silicon / x86). No GPU required. No AI-optimised hardware dependency.",
-    "deployment": "Streamlit Community Cloud or local `streamlit run`. Fully offline after model artifacts are built.",
+    "deployment": "Public Vercel demo (project-seed-phi.vercel.app) + GitHub open source. Full offline Streamlit app in repo.",
 }
 
 GTM_STRATEGY = [
