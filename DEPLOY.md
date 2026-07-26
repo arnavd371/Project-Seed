@@ -1,85 +1,56 @@
-# Deploy Seed on Streamlit Cloud
+# Deploy Seed
 
-Seed is a Streamlit app (persistent Python process). It cannot run on Vercel.
-Use Streamlit Community Cloud for the public demo URL.
+## Vercel (public web demo)
 
-## Prerequisites
+Seed's interactive web UI is a FastAPI app at `app/main.py` (Vercel cannot run Streamlit).
 
-- Public GitHub repo: https://github.com/arnavd371/Project-Seed
-- Model artifacts under `model/model_artifacts/`
-- Training data under `data/`
-- `packages.txt` includes `libgomp1` (required by XGBoost)
+1. From this repo root:
+   ```bash
+   npx vercel --prod
+   ```
+2. Framework: FastAPI (`app/main.py`), Python 3.11+
+3. No secrets required
 
-## Streamlit Cloud setup
+Local FastAPI check:
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
 
-1. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.
-2. Click **Create app** / **New app**.
-3. Set:
-   - **Repository:** `arnavd371/Project-Seed`
-   - **Branch:** `main`
-   - **Main file path:** `app.py`
-4. Click **Advanced settings**:
-   - **Python version:** 3.11 (also set in `runtime.txt`)
-   - **Secrets:** none required (fully offline app)
-5. Deploy.
+## Streamlit (full local / Cloud UI)
 
-Expected URL form: `https://<app-name>.streamlit.app`
+The original Streamlit app is `streamlit_app.py`.
 
-Streamlit Cloud runs `pip install -r requirements.txt` from the repo root.
+```bash
+pip install -r requirements-streamlit.txt
+streamlit run streamlit_app.py --server.port 8502
+```
 
-## Required files in repo
+Streamlit Community Cloud:
+- Repository: `arnavd371/Project-Seed`
+- Branch: `main`
+- Main file path: `streamlit_app.py`
+- Python: 3.11 (`runtime.txt`)
+- `packages.txt` includes `libgomp1` for XGBoost
+
+## Required files
 
 ```
-├── app.py                          # Main Streamlit entry
-├── requirements.txt
-├── packages.txt                    # libgomp1 for XGBoost
-├── runtime.txt                     # python-3.11
-├── .streamlit/config.toml
+├── app/main.py                     # FastAPI (Vercel)
+├── streamlit_app.py                # Full Streamlit UI
+├── requirements.txt                # Vercel / FastAPI deps
+├── requirements-streamlit.txt      # Full local Streamlit deps
+├── packages.txt / runtime.txt      # Streamlit Cloud
 ├── data/
-│   ├── real_training_data.json
-│   ├── gene_drug_map.json
-│   └── gnomad_sas_reference.json
-├── model/
-│   ├── seed_scorer.py
-│   ├── phenotype_classifier.py
-│   └── model_artifacts/
-│       ├── india_calibrated_xgb.pkl
-│       ├── india_population_only_xgb.pkl
-│       ├── baseline_xgb.pkl
-│       └── india_risk_regressor.pkl
+├── model/ (+ model_artifacts/)
 └── utils/
 ```
-
-## Local test before deploy
-
-```bash
-cd "project seed"   # or clone Project-Seed
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-streamlit run app.py --server.port 8502
-```
-
-Open http://localhost:8502 → **Enter Seed** → walk **Analyse**, **Simulations**, **Demo Walkthrough**, **Model Performance**.
-
-## Rebuild artifacts (optional)
-
-If you change training code, regenerate artifacts locally and commit:
-
-```bash
-cd model
-source ../.venv/bin/activate
-python compare_models.py
-python generate_plots.py
-```
-
-**Do not** commit `.venv/` or secrets.
 
 ## Troubleshooting
 
 | Issue | Fix |
 |-------|-----|
+| Vercel cold start slow / OOM | Models load on first request; maxDuration=60 in vercel.json |
 | `FileNotFoundError` for `.pkl` | Commit `model/model_artifacts/` |
-| Import error for `phenotype_classifier` | Keep `model/` folder intact; app adds it to `sys.path` |
-| SHAP slow on Cloud | App falls back to feature-importance proxy automatically |
-| Wide layout not applied | Confirm `.streamlit/config.toml` is in repo root |
-| XGBoost import fails on Cloud | Confirm `packages.txt` has `libgomp1` |
+| XGBoost on Streamlit Cloud | Confirm `packages.txt` has `libgomp1` |
+| Import error for `phenotype_classifier` | Keep `model/` on `sys.path` (set in `app/main.py`) |

@@ -147,7 +147,7 @@ model/train_baseline.py       model/train_model.py         model/generate_plots.
             runs both models, computes India Risk Score)
                       │
                       ▼
-                   app.py (Streamlit)
+                   streamlit_app.py (Streamlit) / app/main.py (Vercel)
        ┌─────────────┬─────────────┬─────────────┐
        │  Analyse    │   Model     │   About &   │
        │  tab        │ Performance │   Impact    │
@@ -160,7 +160,10 @@ model/train_baseline.py       model/train_model.py         model/generate_plots.
 
 ```
 seed/
-  app.py                          Streamlit UI (dark navy / teal, fully offline)
+  streamlit_app.py                Full Streamlit UI (local / Streamlit Cloud)
+  app/main.py                     FastAPI UI for Vercel hosting
+  requirements.txt                Vercel / FastAPI dependencies
+  requirements-streamlit.txt      Full Streamlit dependency set
   data/
     parse_real_data.py            Parses 1000 Genomes combined.csv -> real_training_data.json
     real_training_data.json       5,546 real SAS-individual rows (generated)
@@ -254,7 +257,7 @@ decision, class distributions) to stdout as it runs.
 ```bash
 cd seed
 source .venv/bin/activate
-streamlit run app.py
+streamlit run streamlit_app.py
 ```
 
 Then open the URL Streamlit prints (typically `http://localhost:8501`).
