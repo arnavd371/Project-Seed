@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Seed | बीज · India AI Impact Festival 2026</title>
+  <title>Seed | बीज</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -69,14 +69,11 @@
       font-weight: 400;
     }
 
-    .festival {
-      display: inline-block;
-      border: 1px solid var(--border);
-      box-shadow: 3px 3px 0 0 var(--border);
-      padding: 0.45rem 0.85rem;
-      font-size: 0.75rem;
-      margin: 0.25rem 0 0.5rem;
-      background: var(--card);
+    .tagline {
+      max-width: 34rem;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 0.8rem;
     }
 
     nav.links {
@@ -143,26 +140,6 @@
       font-size: 0.75rem;
       margin-bottom: 0.4rem;
     }
-    .pts {
-      float: right;
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    .check {
-      display: flex;
-      gap: 0.55rem;
-      align-items: flex-start;
-      text-align: left;
-      margin: 0.35rem 0;
-      font-size: 0.8rem;
-    }
-    .check::before {
-      content: "✓";
-      font-weight: 700;
-      flex-shrink: 0;
-    }
 
     .stats {
       display: grid;
@@ -227,19 +204,6 @@
       transform: translate(1px, 1px);
       box-shadow: 2px 2px 0 0 var(--border);
     }
-    button.linkish {
-      font-family: var(--font-serif);
-      font-size: 1rem;
-      background: none;
-      border: none;
-      padding: 0;
-      color: var(--fg);
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 4px;
-      text-decoration-color: rgba(0,0,0,0.25);
-    }
-    button.linkish:hover { text-decoration-color: var(--fg); }
 
     .urgency-0 { border-left: 4px solid #4a7c59; }
     .urgency-1 { border-left: 4px solid #9a7b2e; }
@@ -295,25 +259,24 @@
 </head>
 <body>
   <div class="shell">
-    <div class="wrap" id="frame">
+    <div class="wrap">
       <header class="top">
         <a class="brand" href="#" id="brand">
           Seed
-          <span class="hi">बीज · India-calibrated pharmacogenomics</span>
+          <span class="hi">बीज</span>
         </a>
-        <div class="festival">India AI Impact Festival 2026 · AI Impact Creators (13-17) · Theme: AI for Bharat, Enriching Lives</div>
+        <p class="tagline">India-calibrated pharmacogenomics. Because Indian genes are not European genes.</p>
         <nav class="links" id="nav"></nav>
       </header>
       <div id="app"><p class="muted">Loading…</p></div>
       <div class="footer">
         Decision support only · not a diagnostic device · Open source · Offline-capable ·
-        Public demo on Vercel ·
         <a class="inline" href="https://github.com/arnavd371/Project-Seed" target="_blank" rel="noreferrer">GitHub</a>
       </div>
     </div>
   </div>
   <script>
-    const PAGES = ["home","analyse","metric01","metric02","metric03","research"];
+    const PAGES = ["home","analyse","impact","methods","technical","research"];
     let DATA = null;
     let state = { page: "home", gene: null, genotype: null, result: null };
 
@@ -346,9 +309,9 @@
       return ({
         home: "Home",
         analyse: "Analyse",
-        metric01: "Metric 01",
-        metric02: "Metric 02",
-        metric03: "Metric 03",
+        impact: "Impact",
+        methods: "Why AI",
+        technical: "Technical",
         research: "Research",
       })[p];
     }
@@ -379,9 +342,9 @@
       document.getElementById("app").innerHTML = ({
         home: renderHome,
         analyse: renderAnalyse,
-        metric01: renderM01,
-        metric02: renderM02,
-        metric03: renderM03,
+        impact: renderImpact,
+        methods: renderMethods,
+        technical: renderTechnical,
         research: renderResearch,
       })[state.page]();
       bindAnalyse();
@@ -390,9 +353,9 @@
     function renderHome() {
       return `
         <p class="lede">
-          Because Indian genes are not European genes. Seed recalibrates pharmacogenomic
-          decision support using real 1000 Genomes South Asian data - offline, open source,
-          and built for the India AI Impact Festival 2026 evaluation rubrics.
+          Standard pharmacogenomic tools are calibrated on European allele frequencies.
+          Seed is trained on real 1000 Genomes Project South Asian genomes, runs without
+          LLM or API keys, and reports honest grouped cross-validation metrics.
         </p>
         <div class="stats">
           <div class="stat"><div class="n">6,035</div><div class="l">Real SAS individual rows</div></div>
@@ -400,23 +363,9 @@
           <div class="stat"><div class="n">168</div><div class="l">Unique gene-genotype groups</div></div>
           <div class="stat"><div class="n">0</div><div class="l">Synthetic / SMOTE rows</div></div>
         </div>
-
-        <div class="section-label">Built for the Judge's Rubric</div>
-        <p class="section-sub">AI Impact Creators · Metric 01 (15) · Metric 02 (18) · Metric 03 (14)</p>
-        <div class="pi-box">
-          <div class="check">Problem defined with citations (Metric 01)</div>
-          <div class="check">Target audience: South Asian patients and clinicians (Metric 01)</div>
-          <div class="check">Offline / low-bandwidth · Free · Hindi + English (Metric 01)</div>
-          <div class="check">SDG 3, 10, 9, 12 mapped · environmental pathway disclosed (Metric 01)</div>
-          <div class="check">AI (XGBoost) is primary, not a force-fit (Metric 02)</div>
-          <div class="check">Ethics, privacy, bias mitigation documented (Metric 02)</div>
-          <div class="check">Working prototype + public Vercel deploy + GitHub (Metric 02)</div>
-          <div class="check">Tech stack, hardware, software, custom UI documented (Metric 03)</div>
-        </div>
-
         <div class="pi-box center-text">
-          <div class="pi-box-title">Working prototype</div>
-          <p class="muted">Analyse any of 168 real SAS-observed genotypes with dual ML models.</p>
+          <div class="pi-box-title">Try a real genotype</div>
+          <p class="muted">Compare Calibration ML, population-only ML, and a European baseline on the same SAS-observed genotype.</p>
           <p><button class="primary" id="go-analyse">Enter Analyse</button></p>
         </div>`;
     }
@@ -439,10 +388,9 @@
         .join("");
       return `
         <div class="section-label">Analyse</div>
-        <p class="section-sub">Metric 02 Readiness: working prototype · equivalent UX via dropdowns (Metric 01)</p>
+        <p class="section-sub">Only genotypes observed in real 1000 Genomes SAS data are listed.</p>
         <div class="pi-box">
-          <div class="pi-box-title">Select a real SAS genotype</div>
-          <p class="pi-box-meta">Only genotypes observed in 1000 Genomes SAS are listed - no free-text parsing errors.</p>
+          <div class="pi-box-title">Gene and genotype</div>
           <label for="gene">Gene</label>
           <select id="gene">${geneOpts}</select>
           <label for="genotype">Genotype</label>
@@ -475,9 +423,9 @@
           <div class="pi-box-meta">${esc(r.gene)} ${esc(r.genotype)} → ${esc(r.phenotype)} (${esc(r.observed_clinical_significance_label)})</div>
         </div>
         <div class="grid2">
-          <div class="pi-box"><div class="pi-box-title">Calibration ML (primary AI)</div><strong>${esc(r.india_predicted_label)}</strong> (${(r.india_confidence * 100).toFixed(1)}%)</div>
+          <div class="pi-box"><div class="pi-box-title">Calibration ML</div><strong>${esc(r.india_predicted_label)}</strong> (${(r.india_confidence * 100).toFixed(1)}%)</div>
           <div class="pi-box"><div class="pi-box-title">Global baseline</div><strong>${esc(r.baseline_predicted_label)}</strong> (${(r.baseline_confidence * 100).toFixed(1)}%)</div>
-          <div class="pi-box"><div class="pi-box-title">Population-only ML</div><strong>${popOnly}</strong><p class="muted" style="margin:0.4rem 0 0">AI without CPIC score - proves frequency structure alone is hard (~59% CV).</p></div>
+          <div class="pi-box"><div class="pi-box-title">Population-only ML</div><strong>${popOnly}</strong><p class="muted" style="margin:0.4rem 0 0">Frequency structure only - no CPIC score in features.</p></div>
           <div class="pi-box"><div class="pi-box-title">Frequencies</div>
             SAS ${Number(r.india_diplotype_freq).toFixed(4)} ·
             EUR ${Number(r.european_diplotype_freq).toFixed(4)} ·
@@ -496,7 +444,7 @@
           ${r.india_relevance_note ? `<p style="margin-top:0.75rem;"><span class="muted">India-specific note</span><br>${esc(r.india_relevance_note)}</p>` : ""}
         </div>
         <div class="pi-box">
-          <div class="pi-box-title">Hindi summary (multilingual)</div>
+          <div class="pi-box-title">Hindi summary</div>
           <pre>${esc(r.hindi_summary)}</pre>
         </div>`;
     }
@@ -523,9 +471,9 @@
       };
     }
 
-    function renderM01() {
+    function renderImpact() {
       const cites = (DATA.content.citations || []).map((c) =>
-        `<div class="check"><strong>[${c.id}]</strong> ${esc(c.text)} <span class="muted">(${esc(c.source || "")})</span></div>`
+        `<div class="pi-box"><div class="pi-box-title">${esc(c.text)}</div><div class="pi-box-meta">${esc(c.source || "")}</div></div>`
       ).join("");
       const aud = (DATA.content.audience || []).map((a) =>
         `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`
@@ -536,54 +484,29 @@
       const acc = (DATA.content.accessibility || []).map((a) => `<li>${esc(a)}</li>`).join("");
 
       return `
-        <div class="section-label">Metric 01 · Enriching Lives - Impact &amp; Inclusion</div>
-        <p class="section-sub">15 points · Significance · Diversity &amp; Inclusion · Societal impact</p>
-
+        <div class="section-label">Impact</div>
+        <p class="section-sub">Who Seed is for, and why population calibration matters.</p>
         <div class="pi-box">
-          <span class="pts">0-2 + 0-1</span>
-          <div class="pi-box-title">Significance of the problem statement</div>
-          <p><strong>What:</strong> European-calibrated pharmacogenomic tools mis-estimate prescribing risk when allele frequencies differ in South Asians.</p>
-          <p><strong>Where:</strong> India and South Asian diaspora (~1.4B people).</p>
-          <p><strong>Relevance:</strong> Clopidogrel response (CYP2C19), fluoropyrimidine toxicity (DPYD), thiopurine toxicity (NUDT15).</p>
-          <p><strong>Solution:</strong> Offline XGBoost tools trained on real 1000 Genomes SAS genomes that recalibrate urgency with population frequency structure.</p>
+          <div class="pi-box-title">The gap</div>
+          <p>European-calibrated pharmacogenomic tools can mis-estimate prescribing risk when allele frequencies differ in South Asia. That matters for clopidogrel (CYP2C19), fluoropyrimidines (DPYD), and thiopurines (NUDT15) across India and the diaspora.</p>
         </div>
-
+        <div class="section-label" style="font-size:1.1rem">Evidence</div>
+        ${cites}
         <div class="pi-box">
-          <span class="pts">citations 0-1</span>
-          <div class="pi-box-title">Evidence of the problem (citations)</div>
-          ${cites}
-        </div>
-
-        <div class="pi-box">
-          <span class="pts">0-2</span>
-          <div class="pi-box-title">Target audience well defined</div>
+          <div class="pi-box-title">Who it serves</div>
           <table><tbody>${aud}</tbody></table>
         </div>
-
         <div class="pi-box">
-          <span class="pts">UX / disability / cost / offline / multilingual</span>
-          <div class="pi-box-title">Diversity &amp; Inclusion checklist</div>
-          <div class="check"><strong>Equivalent UX:</strong> Same dropdown Analyse flow for all users; no role-gated features.</div>
-          <div class="check"><strong>Disability / tech barriers:</strong> High-contrast black-border boxes; monospace labels; large click targets; no color-only encoding of urgency (text banners too).</div>
-          <div class="check"><strong>Financially viable:</strong> Free and open-source; runs on any laptop; zero subscription / API cost.</div>
-          <div class="check"><strong>Offline / low-bandwidth:</strong> Full Streamlit app runs after local install with no network. This Vercel page is a public mirror of precomputed outputs for judges.</div>
-          <div class="check"><strong>Multilingual / multi-modal:</strong> English UI + algorithmic Hindi clinical summaries; gene/genotype selection (visual) + tabular results.</div>
+          <div class="pi-box-title">Access</div>
           <ul>${acc}</ul>
         </div>
-
         <div class="pi-box">
-          <span class="pts">society / AI vs traditional / SDG / environment / sustenance</span>
-          <div class="pi-box-title">Impact on society &amp; human lives</div>
-          <div class="check"><strong>Societal impact:</strong> Safer chemo and cardiac prescribing for under-represented South Asian genomes.</div>
-          <div class="check"><strong>AI beyond traditional software:</strong> Rule tables give CPIC labels; XGBoost learns non-linear population-frequency interactions and continuous India risk scores that static rules cannot.</div>
-          <div class="check"><strong>SDG mapping:</strong> see table below.</div>
-          <div class="check"><strong>Environmental implications:</strong> No cloud LLM; CPU-only XGBoost; minimal carbon vs always-on generative AI.</div>
-          <div class="check"><strong>Sustainable pathways:</strong> Open GitHub + retrainable pipeline when CPIC/1000G updates arrive; clinic zip deploy path.</div>
-          <table style="margin-top:0.75rem"><thead><tr><th>SDG</th><th>Mapping</th></tr></thead><tbody>${sdg}</tbody></table>
+          <div class="pi-box-title">Sustainable Development Goals</div>
+          <table><thead><tr><th>SDG</th><th>How Seed connects</th></tr></thead><tbody>${sdg}</tbody></table>
         </div>`;
     }
 
-    function renderM02() {
+    function renderMethods() {
       const gtm = (DATA.content.gtm || []).map((a) =>
         `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`
       ).join("");
@@ -592,90 +515,45 @@
       ).join("");
 
       return `
-        <div class="section-label">Metric 02 · AI Innovation: Application &amp; Implementation</div>
-        <p class="section-sub">18 points · Requirement &amp; innovative use · Complexity &amp; responsible AI · Readiness</p>
-
+        <div class="section-label">Why AI</div>
+        <p class="section-sub">What rules already do - and what XGBoost adds on real SAS genomes.</p>
         <div class="pi-box">
-          <span class="pts">force-fit 0-1 · primary 0-2 · originality 0-3</span>
-          <div class="pi-box-title">Requirement &amp; innovative use of AI</div>
-          <div class="check"><strong>Not a force-fit:</strong> A pure CPIC rule baseline already exists in-app (~100% on phenotype→class). AI is required for population-adjusted significance and frequency-structure learning.</div>
-          <div class="check"><strong>AI is primary:</strong> Dual XGBoost classifiers + risk regressor are the core product, not an accessory chatbot.</div>
-          <div class="check"><strong>Originality:</strong> Population-only vs Calibration A/B on identical real SAS genotypes; grouped CV leakage fix; India-frequency recalibration of CPIC urgency.</div>
+          <div class="pi-box-title">Beyond a lookup table</div>
+          <pre>${esc(DATA.content.why_ai || "")}</pre>
         </div>
-
         <div class="pi-box">
-          <span class="pts">AI skills 0-2 · data obtain 0-1 · data justified 0-1</span>
-          <div class="pi-box-title">AI knowledge, data obtainment &amp; justification</div>
-          <div class="check"><strong>Skills demonstrated:</strong> XGBoost, StratifiedGroupKFold, gene-held-out CV, LOSO, overfitting gap diagnosis, feature engineering from allele frequencies.</div>
-          <div class="check"><strong>Data obtained:</strong> Parsed from public 1000 Genomes Project South Asian WGS (GIH, PJL, ITU, STU, BEB) + CPIC gene-drug map + gnomAD SAS reference for external checks.</div>
-          <div class="check"><strong>Data justified:</strong> Real rows only; SMOTE rejected (n=4 urgent class); metrics at genotype-group level because features are identical within genotype (~33 duplicate rows).</div>
-          <pre style="margin-top:0.75rem">${esc(DATA.content.why_ai || "")}</pre>
+          <div class="pi-box-title">Data</div>
+          <p>Parsed from public 1000 Genomes Project South Asian WGS (GIH, PJL, ITU, STU, BEB), joined with CPIC gene-drug guidance. Real rows only. SMOTE was evaluated and rejected for the tiny urgent class.</p>
         </div>
-
         <div class="pi-box">
-          <span class="pts">ethics / privacy / bias / environment</span>
-          <div class="pi-box-title">Complexity &amp; responsible use of AI</div>
+          <div class="pi-box-title">Ethics, privacy, environment</div>
           <table><tbody>${eth}</tbody></table>
         </div>
-
         <div class="pi-box">
-          <span class="pts">prototype 0-1 · deployment 0-2 · GTM 0-1</span>
-          <div class="pi-box-title">Readiness of the solution</div>
-          <div class="check"><strong>Working prototype:</strong> Analyse tab scores live genotypes with dual models + Hindi summary.</div>
-          <div class="check"><strong>Deployment status:</strong> Public open link on Vercel + open-source GitHub repo (arnavd371/Project-Seed). Full offline Streamlit app in the same repo.</div>
-          <div class="check"><strong>GTM / deployment strategy:</strong></div>
+          <div class="pi-box-title">Path forward</div>
           <table><tbody>${gtm}</tbody></table>
-          <p style="margin-top:0.75rem;text-align:center">
-            <a class="inline" href="https://project-seed-phi.vercel.app" target="_blank" rel="noreferrer">https://project-seed-phi.vercel.app</a>
-            ·
-            <a class="inline" href="https://github.com/arnavd371/Project-Seed" target="_blank" rel="noreferrer">GitHub</a>
-          </p>
         </div>`;
     }
 
-    function renderM03() {
+    function renderTechnical() {
       const techRows = Object.entries(DATA.content.tech || {}).map(([k, v]) =>
         `<tr><td>${esc(k)}</td><td>${esc(Array.isArray(v) ? v.join(", ") : v)}</td></tr>`
       ).join("");
 
       return `
-        <div class="section-label">Metric 03 · Technical Knowledge and Skills</div>
-        <p class="section-sub">14 points · Tech stack · Hardware · Software · UI complexity · Emerged AI</p>
-
+        <div class="section-label">Technical</div>
+        <p class="section-sub">Stack, hardware, and how the hosted demo relates to the full offline app.</p>
         <div class="pi-box">
-          <span class="pts">tech-stack 0-2</span>
-          <div class="pi-box-title">Tech stack (well defined)</div>
+          <div class="pi-box-title">Stack</div>
           <table><tbody>${techRows}</tbody></table>
-          <p class="muted" style="margin-top:0.75rem">Hosted demo: static Vercel front-end serving precomputed XGBoost outputs for all 168 genotypes. Full interactive stack remains in <code>streamlit_app.py</code>.</p>
         </div>
-
         <div class="pi-box">
-          <span class="pts">hardware 0-3</span>
-          <div class="pi-box-title">Hardware used</div>
-          <div class="check"><strong>General-purpose computing:</strong> Training and inference on a standard laptop/desktop (Apple Silicon / x86). No GPU required.</div>
-          <div class="check">Chosen deliberately for clinic deployability in low-resource settings (aligns with offline / financial viability).</div>
+          <div class="pi-box-title">Hardware</div>
+          <p>Trains and runs on a general-purpose laptop or desktop. No GPU required - intentional for clinic and classroom machines.</p>
         </div>
-
         <div class="pi-box">
-          <span class="pts">software 0-3</span>
-          <div class="pi-box-title">Software used</div>
-          <div class="check"><strong>Multiple programs + code:</strong> Python training scripts, XGBoost/sklearn models, Streamlit UI, FastAPI optional entry, Vercel static host, JSON data pipeline, PDF/Hindi generators.</div>
-          <div class="check">Not no-code: custom feature engineering, grouped CV, gene holdout validation, comparison runner.</div>
-        </div>
-
-        <div class="pi-box">
-          <span class="pts">UI complexity 0-3</span>
-          <div class="pi-box-title">Complexity of user interface</div>
-          <div class="check"><strong>Made specifically for the solution:</strong> Custom Seed UI (PI-inspired cream canvas, serif brand, mono body, offset boxes) with Analyse, Metric 01-03 tabs, and Research - not a drag-and-drop template.</div>
-          <div class="check">Urgency banners, dual-model comparison cards, subpopulation tables, bilingual summaries.</div>
-        </div>
-
-        <div class="pi-box">
-          <span class="pts">emerged AI 0-3</span>
-          <div class="pi-box-title">Usage of emerged AI</div>
-          <div class="check"><strong>Advanced packages:</strong> XGBoost gradient boosting, scikit-learn grouped CV, population feature engineering, optional SHAP explanations in Streamlit.</div>
-          <div class="check"><strong>Deliberate non-use of GenAI/LLM/RAG agents:</strong> Clinical reliability requires deterministic, auditable outputs. Algorithmic Hindi templates replace LLM summaries. This is a responsible design choice, not a missing feature.</div>
-          <div class="check">Judges can still score high on advanced classical ML + responsible AI practice (privacy, bias, environment).</div>
+          <div class="pi-box-title">This site vs the full app</div>
+          <p>This page serves precomputed model outputs for all 168 observed genotypes. The repository also includes the full Streamlit app (<code>streamlit_app.py</code>) for fully offline local use with charts, PDF export, and simulations.</p>
         </div>`;
     }
 
@@ -686,11 +564,10 @@
 
     function renderResearch() {
       return `
-        <div class="section-label">Research · Honest ML metrics</div>
-        <p class="section-sub">Supports Metric 02 AI skills + Metric 03 software complexity</p>
+        <div class="section-label">Research</div>
+        <p class="section-sub">Honest group-level metrics. Each genotype counts once.</p>
         <div class="pi-box">
-          <div class="pi-box-title">Group-level model comparison</div>
-          <p class="pi-box-meta">Each genotype counts once. Plain row-level CV was rejected after duplicate-genotype leakage.</p>
+          <div class="pi-box-title">Model comparison</div>
           <table>
             <thead><tr><th>Model</th><th>Accuracy</th><th>Macro F1</th></tr></thead>
             <tbody>
@@ -702,9 +579,9 @@
           </table>
         </div>
         <div class="pi-box">
-          <div class="pi-box-title">Why grouped CV matters</div>
+          <div class="pi-box-title">Grouped cross-validation</div>
           <pre>6,035 rows but only 168 unique gene|genotype groups. Features are identical within a genotype.
-Plain k-fold can put the same genotype in train and test → fake ~100% accuracy.
+Plain k-fold can put the same genotype in train and test, which inflates accuracy.
 Grouped CV keeps all rows for one genotype in exactly one fold.</pre>
         </div>`;
     }
