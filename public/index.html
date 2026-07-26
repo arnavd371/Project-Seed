@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seed | बीज</title>
+  <style>
+    :root { --cream:#F5F4EF; --ink:#1a1a1a; --muted:#666; --card:#fff; --border:#000; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+      background: linear-gradient(180deg,#F5F4EF 0%, #ebe8df 100%); color: var(--ink); }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    .hero { text-align:center; padding: 2rem 0 1rem; }
+    .hero h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); margin:0; letter-spacing:-.03em; }
+    .hero .sub { color: var(--muted); margin-top:.4rem; font-size:1.15rem; }
+    .hero .tag { margin-top:.85rem; font-size:1.05rem; line-height:1.5; }
+    .nav { display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center; margin:1.5rem 0 2rem; }
+    .nav button { border:2px solid var(--border); background:var(--card); padding:.45rem .85rem;
+      font: inherit; cursor:pointer; box-shadow:3px 3px 0 var(--border); }
+    .nav button.active, .nav button:hover { background:#000; color:#fff; }
+    .card { background:var(--card); border:2px solid var(--border); box-shadow:4px 4px 0 var(--border);
+      padding:1.15rem 1.25rem; margin:1rem 0; }
+    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.75rem; margin:1.25rem 0; }
+    .stat { background:var(--card); border:2px solid var(--border); padding:1rem; text-align:center; box-shadow:3px 3px 0 var(--border); }
+    .stat .n { font-size:1.7rem; font-weight:700; }
+    .stat .l { font-size:.8rem; color:var(--muted); margin-top:.25rem; }
+    label { display:block; font-weight:600; margin:.75rem 0 .35rem; }
+    select, button.primary { font: inherit; }
+    select { width:100%; padding:.65rem .7rem; border:2px solid var(--border); background:#fff; }
+    button.primary { border:2px solid var(--border); background:#000; color:#fff; padding:.7rem 1.1rem; cursor:pointer; box-shadow:3px 3px 0 #444; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media (max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+    .urgency-0{ border-left:8px solid #6b7280; } .urgency-1{ border-left:8px solid #ca8a04; }
+    .urgency-2{ border-left:8px solid #ea580c; } .urgency-3{ border-left:8px solid #dc2626; }
+    table { width:100%; border-collapse:collapse; font-size:.92rem; }
+    th, td { border-bottom:1px solid #ddd; padding:.45rem .3rem; text-align:left; vertical-align:top; }
+    .muted { color: var(--muted); }
+    .footer { margin-top:2.5rem; color:var(--muted); font-size:.85rem; text-align:center; }
+    pre { white-space:pre-wrap; font-size:.9rem; }
+    .hidden { display:none; }
+    .err { color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>🌱 Seed</h1>
+      <div class="sub">बीज</div>
+      <div class="tag">India-calibrated pharmacogenomics.<br>Because Indian genes are not European genes.</div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div id="app"><p class="muted">Loading Seed data…</p></div>
+    <div class="footer">Decision support only · not a diagnostic device · Open source · Precomputed from real 1000 Genomes SAS models</div>
+  </div>
+  <script>
+    const PAGES = ["home","analyse","performance","impact","ai","technical"];
+    let DATA = null;
+    let state = { page: "home", gene: null, genotype: null, result: null };
+
+    const urgencyText = {
+      0: "No immediate pharmacogenomic action required for this genotype.",
+      1: "Moderate significance. Consider this genotype when prescribing affected drugs.",
+      2: "Significant. Dose or drug-choice adjustment should be considered.",
+      3: "URGENT. This genotype may cause serious harm with standard dosing of affected drugs.",
+    };
+
+    async function boot() {
+      const res = await fetch("./data/seed_payload.json");
+      if (!res.ok) throw new Error("Failed to load seed_payload.json");
+      DATA = await res.json();
+      const genes = Object.keys(DATA.genes).sort();
+      state.gene = genes[0];
+      const gts = Object.keys(DATA.genes[state.gene]);
+      state.genotype = gts[0];
+      renderNav();
+      render();
+    }
+
+    function renderNav() {
+      const nav = document.getElementById("nav");
+      nav.innerHTML = PAGES.map(p =>
+        `<button data-page="${p}" class="${state.page===p?"active":""}">${label(p)}</button>`
+      ).join("");
+      nav.querySelectorAll("button").forEach(btn => btn.onclick = () => {
+        state.page = btn.dataset.page;
+        if (state.page !== "analyse") state.result = null;
+        renderNav(); render();
+      });
+    }
+
+    function label(p) {
+      return ({home:"Home", analyse:"Analyse", performance:"Model Performance", impact:"Impact", ai:"AI Innovation", technical:"Technical"})[p];
+    }
+
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function render() {
+      const el = document.getElementById("app");
+      el.innerHTML = ({
+        home: renderHome,
+        analyse: renderAnalyse,
+        performance: renderPerf,
+        impact: renderImpact,
+        ai: renderAI,
+        technical: renderTech,
+      })[state.page]();
+      bindAnalyse();
+    }
+
+    function renderHome() {
+      return `
+        <div class="card"><p>Standard pharmacogenomic tools are calibrated on European allele frequencies.
+        Seed is trained on real 1000 Genomes Project South Asian genomes and reports honest grouped
+        cross-validation metrics with every frequency traceable to observed individuals.</p></div>
+        <div class="stats">
+          <div class="stat"><div class="n">6,035</div><div class="l">Real SAS individual rows</div></div>
+          <div class="stat"><div class="n">489</div><div class="l">South Asian genomes</div></div>
+          <div class="stat"><div class="n">168</div><div class="l">Unique gene-genotype groups</div></div>
+          <div class="stat"><div class="n">0</div><div class="l">Synthetic / SMOTE rows</div></div>
+        </div>
+        <p style="text-align:center;margin-top:1.5rem;">
+          <button class="primary" id="go-analyse">Enter Seed → Analyse</button>
+        </p>`;
+    }
+
+    function renderAnalyse() {
+      const genes = Object.keys(DATA.genes).sort();
+      const gts = Object.keys(DATA.genes[state.gene] || {}).sort((a,b) =>
+        (DATA.genes[state.gene][b].n_real_individuals||0) - (DATA.genes[state.gene][a].n_real_individuals||0)
+      );
+      const geneOpts = genes.map(g => `<option value="${esc(g)}" ${g===state.gene?"selected":""}>${esc(g)}</option>`).join("");
+      const gtOpts = gts.map(gt => {
+        const n = DATA.genes[state.gene][gt].n_real_individuals;
+        return `<option value="${esc(gt)}" ${gt===state.genotype?"selected":""}>${esc(gt)} · ${n} real individuals</option>`;
+      }).join("");
+      return `
+        <div class="card">
+          <h2>Analyse genotype</h2>
+          <p class="muted">Only genotypes observed in real 1000 Genomes SAS data are listed.</p>
+          <label for="gene">Gene</label>
+          <select id="gene">${geneOpts}</select>
+          <label for="genotype">Genotype</label>
+          <select id="genotype">${gtOpts}</select>
+          <p style="margin-top:1rem;"><button class="primary" id="run">Analyse Genotype</button></p>
+        </div>
+        <div id="result">${state.result ? renderResult(state.result) : ""}</div>`;
+    }
+
+    function renderResult(r) {
+      const cls = r.observed_clinical_significance;
+      const pops = DATA.meta.sas_populations.map(p => {
+        const v = r.population_breakdown[p];
+        const name = DATA.meta.sas_population_names[p];
+        return `<tr><td>${esc(name)}</td><td>${esc(p)}</td><td>${v==null?"N/A":v+"%"}</td></tr>`;
+      }).join("");
+      const drugs = (r.drugs||[]).map(d => `<tr><td>${esc(d)}</td><td>${esc(r.observed_clinical_significance_label)}</td></tr>`).join("")
+        || `<tr><td colspan="2">No CPIC drug associations on file for this gene.</td></tr>`;
+      const popOnly = r.population_only_predicted_label
+        ? `${esc(r.population_only_predicted_label)} (${(r.population_only_confidence*100).toFixed(1)}%)`
+        : "N/A";
+      return `
+        <div class="card urgency-${cls}">
+          <h2>${esc(urgencyText[cls])}</h2>
+          <p class="muted">${esc(r.gene)} ${esc(r.genotype)} → ${esc(r.phenotype)} (${esc(r.observed_clinical_significance_label)})</p>
+        </div>
+        <div class="grid2">
+          <div class="card"><h3>Calibration ML</h3><p><strong>${esc(r.india_predicted_label)}</strong> (${(r.india_confidence*100).toFixed(1)}%)</p></div>
+          <div class="card"><h3>Global baseline</h3><p><strong>${esc(r.baseline_predicted_label)}</strong> (${(r.baseline_confidence*100).toFixed(1)}%)</p></div>
+          <div class="card"><h3>Population-only ML</h3><p><strong>${popOnly}</strong></p></div>
+          <div class="card"><h3>Frequencies</h3>
+            <p>SAS: ${Number(r.india_diplotype_freq).toFixed(4)}<br>
+               EUR: ${Number(r.european_diplotype_freq).toFixed(4)}<br>
+               SAS/EUR: ${Number(r.sas_vs_eur_ratio).toFixed(2)}<br>
+               n = ${r.n_real_individuals} real SAS individuals</p></div>
+        </div>
+        <div class="card"><h3>SAS subpopulation breakdown</h3>
+          <table><thead><tr><th>Subpopulation</th><th>Code</th><th>% carrying</th></tr></thead><tbody>${pops}</tbody></table></div>
+        <div class="card"><h3>Clinical interpretation</h3>
+          <p><strong>${esc(r.gene)}</strong> (${esc(r.full_name)}) - CPIC evidence level <strong>${esc(r.cpic_level)}</strong>.
+          Phenotype: <strong>${esc(r.phenotype)}</strong>.</p>
+          <table><thead><tr><th>Affected drug</th><th>Significance</th></tr></thead><tbody>${drugs}</tbody></table>
+          ${r.india_relevance_note ? `<p><strong>India-specific note:</strong> ${esc(r.india_relevance_note)}</p>` : ""}
+        </div>
+        <div class="card"><h3>Hindi summary</h3><pre>${esc(r.hindi_summary)}</pre></div>`;
+    }
+
+    function bindAnalyse() {
+      const go = document.getElementById("go-analyse");
+      if (go) go.onclick = () => { state.page = "analyse"; renderNav(); render(); };
+      const gene = document.getElementById("gene");
+      const gt = document.getElementById("genotype");
+      const run = document.getElementById("run");
+      if (gene) gene.onchange = () => {
+        state.gene = gene.value;
+        state.genotype = Object.keys(DATA.genes[state.gene])[0];
+        state.result = null;
+        render();
+      };
+      if (gt) gt.onchange = () => { state.genotype = gt.value; };
+      if (run) run.onclick = () => {
+        state.gene = gene.value;
+        state.genotype = gt.value;
+        state.result = DATA.genes[state.gene][state.genotype];
+        render();
+        document.getElementById("result")?.scrollIntoView({behavior:"smooth"});
+      };
+    }
+
+    function metric(key, name) {
+      const b = DATA.comparison[key] || {};
+      return `<tr><td>${esc(name)}</td><td>${b.accuracy ?? "-"}</td><td>${b.macro_f1 ?? "-"}</td></tr>`;
+    }
+
+    function renderPerf() {
+      return `<div class="card"><h2>Model performance</h2>
+        <p class="muted">Group-level metrics - each genotype counts once.</p>
+        <table><thead><tr><th>Model</th><th>Accuracy</th><th>Macro F1</th></tr></thead>
+        <tbody>
+          ${metric("rule_baseline","Rule baseline")}
+          ${metric("population_only","Population-only ML")}
+          ${metric("india_calibrated","Calibration ML")}
+          ${metric("baseline","Global baseline ML")}
+        </tbody></table></div>`;
+    }
+
+    function renderImpact() {
+      const cites = DATA.content.citations.map(c =>
+        `<div class="card"><strong>[${c.id}]</strong> ${esc(c.text)}<br><span class="muted">${esc(c.source||"")}</span></div>`
+      ).join("");
+      const sdg = DATA.content.sdg.map(s => `<tr><td>${esc(s.sdg)}</td><td>${esc(s.mapping)}</td></tr>`).join("");
+      const aud = DATA.content.audience.map(a => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`).join("");
+      const acc = DATA.content.accessibility.map(a => `<li>${esc(a)}</li>`).join("");
+      return `<div class="card"><h2>Impact &amp; Inclusion</h2>
+        <p>Genomic tools trained on European cohorts can mis-estimate prescribing risk for ~1.4B South Asians.</p></div>
+        <h3>Evidence</h3>${cites}
+        <div class="card"><h3>Target audience</h3><table><tbody>${aud}</tbody></table></div>
+        <div class="card"><h3>SDG mapping</h3><table><tbody>${sdg}</tbody></table></div>
+        <div class="card"><h3>Accessibility</h3><ul>${acc}</ul></div>`;
+    }
+
+    function renderAI() {
+      const gtm = DATA.content.gtm.map(a => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`).join("");
+      const eth = DATA.content.ethics.map(a => `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`).join("");
+      return `<div class="card"><h2>Why AI (not only rules)</h2><pre>${esc(DATA.content.why_ai)}</pre></div>
+        <div class="card"><h3>Go-to-market</h3><table><tbody>${gtm}</tbody></table></div>
+        <div class="card"><h3>Ethics &amp; privacy</h3><table><tbody>${eth}</tbody></table></div>`;
+    }
+
+    function renderTech() {
+      const tech = Object.entries(DATA.content.tech).map(([k,v]) =>
+        `<tr><td>${esc(k)}</td><td>${esc(Array.isArray(v)?v.join(", "):v)}</td></tr>`
+      ).join("");
+      return `<div class="card"><h2>Technical</h2>
+        <p>Dual XGBoost classifiers on real SAS WGS-derived genotype groups.
+        This hosted demo serves precomputed model outputs for all 168 observed genotypes.</p>
+        <table><tbody>${tech}</tbody></table></div>`;
+    }
+
+    boot().catch(err => {
+      document.getElementById("app").innerHTML = `<p class="err">${esc(err.message)}</p>`;
+    });
+  </script>
+</body>
+</html>

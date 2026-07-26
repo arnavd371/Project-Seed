@@ -6,3 +6,5 @@ venv/
 *.env
 combined.csv
 data/1kgp*/
+.vercel
+.env*
