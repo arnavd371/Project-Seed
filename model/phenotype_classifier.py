@@ -78,6 +78,34 @@ RISK_REGRESSOR_FEATURE_NAMES = EXPANDED_POPULATION_FEATURE_NAMES + ["clinical_si
 # At inference, clinical_significance comes from genotype→phenotype lookup (not leaked).
 CALIBRATION_CLASSIFIER_FEATURE_NAMES = EXPANDED_POPULATION_FEATURE_NAMES + ["clinical_significance"]
 
+# Predict whether India needs higher urgency than CPIC text alone.
+# No clinical_significance in features - model must use population structure.
+URGENCY_SHIFT_FEATURE_NAMES = [
+    "india_diplotype_freq",
+    "european_diplotype_freq",
+    "east_asian_diplotype_freq",
+    "african_diplotype_freq",
+    "american_diplotype_freq",
+    "global_diplotype_freq",
+    "log_sas_vs_eur",
+    "sas_vs_eas_ratio",
+    "sas_vs_global_ratio",
+    "gene_importance",
+    "is_chemo_gene",
+    "log_india_freq",
+    "freq_difference",
+    "subpop_dispersion",
+    "subpop_entropy",
+    "star_allele_count",
+    "is_compound_het",
+    "is_homozygous_variant",
+]
+
+URGENCY_SHIFT_LABELS = {
+    0: "No upward shift",
+    1: "Higher urgency for India",
+}
+
 DEFAULT_CLASSIFIER_PARAMS = {
     "n_estimators": 120,
     "max_depth": 4,
@@ -229,6 +257,45 @@ def build_expanded_features_from_entry(entry):
     ]
 
 
+def build_urgency_shift_features_from_entry(entry):
+    india_freq = float(entry["india_diplotype_freq"])
+    eur_freq = float(entry["european_diplotype_freq"])
+    ratio = float(entry["sas_vs_eur_ratio"])
+    # Cap extreme synthetic-looking ratios from near-zero EUR denominators.
+    capped_ratio = min(max(ratio, 0.0), 100.0)
+    return [
+        india_freq,
+        eur_freq,
+        float(entry.get("east_asian_diplotype_freq", 0.0)),
+        float(entry.get("african_diplotype_freq", 0.0)),
+        float(entry.get("american_diplotype_freq", 0.0)),
+        float(entry.get("global_diplotype_freq", 0.0)),
+        float(np.log1p(capped_ratio)),
+        float(entry.get("sas_vs_eas_ratio", 0.0)),
+        float(entry.get("sas_vs_global_ratio", 0.0)),
+        float(entry["gene_importance"]),
+        float(entry["is_chemo_gene"]),
+        float(np.log1p(india_freq)),
+        india_freq - eur_freq,
+        float(entry.get("subpop_dispersion", 0.0)),
+        float(entry.get("subpop_entropy", 0.0)),
+        float(entry.get("star_allele_count", 0)),
+        float(entry.get("is_compound_het", 0)),
+        float(entry.get("is_homozygous_variant", 0)),
+    ]
+
+
+def urgency_shift_label(entry):
+    """
+    1 if population-adjusted urgency is higher than CPIC clinical_significance alone.
+    Binary because true 'lower' cases are too rare for stable multiclass CV.
+    """
+    adj = population_adjusted_significance(
+        entry["clinical_significance"], entry["sas_vs_eur_ratio"]
+    )
+    return 1 if int(adj) > int(entry["clinical_significance"]) else 0
+
+
 def population_adjusted_significance(clinical_sig, sas_ratio):
     """
     Ordinal label that requires population context - not derivable from CPIC alone.
@@ -295,11 +362,19 @@ def make_risk_regressor(random_state=42, params=None):
     )
 
 
-def make_classifier(random_state=42, params=None):
+def make_classifier(random_state=42, params=None, num_classes=None):
     cfg = {**DEFAULT_CLASSIFIER_PARAMS, **(params or {})}
+    n_classes = NUM_CLASSES if num_classes is None else int(num_classes)
+    if n_classes <= 2:
+        return XGBClassifier(
+            objective="binary:logistic",
+            random_state=random_state,
+            eval_metric="logloss",
+            **cfg,
+        )
     return XGBClassifier(
         objective="multi:softprob",
-        num_class=NUM_CLASSES,
+        num_class=n_classes,
         random_state=random_state,
         eval_metric="mlogloss",
         **cfg,

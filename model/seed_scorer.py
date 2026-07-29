@@ -10,10 +10,13 @@ from phenotype_classifier import (
     BASELINE_FEATURE_NAMES,
     CALIBRATION_CLASSIFIER_FEATURE_NAMES,
     EXPANDED_POPULATION_FEATURE_NAMES,
+    URGENCY_SHIFT_FEATURE_NAMES,
+    URGENCY_SHIFT_LABELS,
     build_baseline_features_from_entry,
     build_calibration_classifier_features_from_entry,
     build_expanded_features_from_entry,
     build_risk_features_from_entry,
+    build_urgency_shift_features_from_entry,
     population_adjusted_significance,
     heuristic_india_risk,
     rule_adjusted_risk,
@@ -48,6 +51,7 @@ def _model_fingerprint():
         "baseline_xgb.pkl",
         "india_population_only_xgb.pkl",
         "india_risk_regressor.pkl",
+        "india_urgency_shift_xgb.pkl",
         "feature_engineer.pkl",
     ]
     parts = []
@@ -81,6 +85,8 @@ class SeedScorer:
         self.population_only_model = load(pop_only_path) if os.path.exists(pop_only_path) else None
         risk_path = os.path.join(ARTIFACTS_DIR, "india_risk_regressor.pkl")
         self.risk_regressor = load(risk_path) if os.path.exists(risk_path) else None
+        shift_path = os.path.join(ARTIFACTS_DIR, "india_urgency_shift_xgb.pkl")
+        self.urgency_shift_model = load(shift_path) if os.path.exists(shift_path) else None
 
         self.gnomad_ref = {}
         if os.path.exists(GNOMAD_PATH):
@@ -252,6 +258,29 @@ class SeedScorer:
             if self.population_only_model is not None else None
         )
 
+        if self.urgency_shift_model is not None:
+            shift_x = build_urgency_shift_features_from_entry(rep)
+            shift_X = _feature_matrix(shift_x, self.urgency_shift_model, "India Urgency Shift")
+            shift_proba = self.urgency_shift_model.predict_proba(shift_X)[0]
+            shift_pred = int(self.urgency_shift_model.predict(shift_X)[0])
+            # binary:logistic may return shape (1,2) or classes_[pred]
+            if len(shift_proba) == 2:
+                shift_conf = round(float(shift_proba[shift_pred]), 3)
+                shift_prob_higher = round(float(shift_proba[1]), 3)
+            else:
+                shift_conf = round(float(shift_proba[0]), 3)
+                shift_prob_higher = shift_conf if shift_pred == 1 else round(1.0 - shift_conf, 3)
+            shift_label = URGENCY_SHIFT_LABELS.get(shift_pred, str(shift_pred))
+            shift_explain = self._explain(
+                self.urgency_shift_model, shift_x, URGENCY_SHIFT_FEATURE_NAMES
+            )
+        else:
+            shift_pred = None
+            shift_conf = None
+            shift_prob_higher = None
+            shift_label = None
+            shift_explain = None
+
         return {
             "gene": gene,
             "genotype": genotype,
@@ -290,6 +319,13 @@ class SeedScorer:
             "dual_model_agreement": (
                 pop_only_pred == india_pred if pop_only_pred is not None else None
             ),
+            "urgency_shift_predicted_class": shift_pred,
+            "urgency_shift_label": shift_label,
+            "urgency_shift_confidence": shift_conf,
+            "urgency_shift_prob_higher": shift_prob_higher,
+            "urgency_shift_available": self.urgency_shift_model is not None,
+            "urgency_shift_rule_higher": bool(adjusted_sig > rep["clinical_significance"]),
+            "urgency_shift_explanations": shift_explain,
             "calibration_explanations": calibration_explain,
             "population_only_explanations": pop_only_explain,
             "gnomad_comparison": gnomad_hits,

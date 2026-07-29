@@ -351,21 +351,24 @@
     }
 
     function renderHome() {
+      const m = DATA.urgency_shift_metrics || {};
+      const acc = m.accuracy != null ? (m.accuracy * 100).toFixed(1) : "87.5";
+      const f1 = m.macro_f1 != null ? m.macro_f1.toFixed(2) : "0.86";
       return `
         <p class="lede">
           Standard pharmacogenomic tools are calibrated on European allele frequencies.
-          Seed is trained on real 1000 Genomes Project South Asian genomes, runs without
-          LLM or API keys, and reports honest grouped cross-validation metrics.
+          Seed trains an India Urgency Shift model that asks a sharper question: for this
+          genotype, should a South Asian patient be treated as higher urgency than CPIC text alone?
         </p>
         <div class="stats">
           <div class="stat"><div class="n">6,035</div><div class="l">Real SAS individual rows</div></div>
-          <div class="stat"><div class="n">489</div><div class="l">South Asian genomes</div></div>
-          <div class="stat"><div class="n">168</div><div class="l">Unique gene-genotype groups</div></div>
-          <div class="stat"><div class="n">0</div><div class="l">Synthetic / SMOTE rows</div></div>
+          <div class="stat"><div class="n">168</div><div class="l">Genotype groups trained</div></div>
+          <div class="stat"><div class="n">${acc}%</div><div class="l">Urgency Shift CV accuracy</div></div>
+          <div class="stat"><div class="n">${f1}</div><div class="l">Urgency Shift macro F1</div></div>
         </div>
         <div class="pi-box center-text">
-          <div class="pi-box-title">Try a real genotype</div>
-          <p class="muted">Compare Calibration ML, population-only ML, and a European baseline on the same SAS-observed genotype.</p>
+          <div class="pi-box-title">Try India Urgency Shift</div>
+          <p class="muted">Analyse a real SAS-observed genotype and see whether population structure pushes urgency up for Indian patients.</p>
           <p><button class="primary" id="go-analyse">Enter Analyse</button></p>
         </div>`;
     }
@@ -422,6 +425,7 @@
           <div class="pi-box-title">${esc(urgencyText[cls])}</div>
           <div class="pi-box-meta">${esc(r.gene)} ${esc(r.genotype)} → ${esc(r.phenotype)} (${esc(r.observed_clinical_significance_label)})</div>
         </div>
+        ${renderShiftBox(r)}
         <div class="grid2">
           <div class="pi-box"><div class="pi-box-title">Calibration ML</div><strong>${esc(r.india_predicted_label)}</strong> (${(r.india_confidence * 100).toFixed(1)}%)</div>
           <div class="pi-box"><div class="pi-box-title">Global baseline</div><strong>${esc(r.baseline_predicted_label)}</strong> (${(r.baseline_confidence * 100).toFixed(1)}%)</div>
@@ -446,6 +450,23 @@
         <div class="pi-box">
           <div class="pi-box-title">Hindi summary</div>
           <pre>${esc(r.hindi_summary)}</pre>
+        </div>`;
+    }
+
+    function renderShiftBox(r) {
+      if (!r.urgency_shift_available) return "";
+      const higher = Number(r.urgency_shift_predicted_class) === 1;
+      const prob = ((r.urgency_shift_prob_higher ?? 0) * 100).toFixed(1);
+      const title = higher
+        ? "India Urgency Shift: higher than CPIC text alone"
+        : "India Urgency Shift: no upward shift";
+      const body = higher
+        ? `Population structure suggests this genotype deserves higher urgency for South Asian patients than European CPIC wording alone implies. Model confidence in upward shift: ${prob}%.`
+        : `No upward India-specific urgency shift predicted from population structure. Probability of higher urgency: ${prob}%.`;
+      return `<div class="pi-box ${higher ? "urgency-2" : ""}">
+          <div class="pi-box-title">${title}</div>
+          <p>${body}</p>
+          <p class="muted" style="margin:0.5rem 0 0">Trained XGBoost on 168 real SAS genotype groups · grouped CV accuracy ${(DATA.urgency_shift_metrics?.accuracy * 100 || 87.5).toFixed(1)}%</p>
         </div>`;
     }
 
@@ -513,10 +534,15 @@
       const eth = (DATA.content.ethics || []).map((a) =>
         `<tr><td>${esc(a.k)}</td><td>${esc(a.v)}</td></tr>`
       ).join("");
+      const m = DATA.urgency_shift_metrics || {};
 
       return `
         <div class="section-label">Why AI</div>
-        <p class="section-sub">What rules already do - and what XGBoost adds on real SAS genomes.</p>
+        <p class="section-sub">What rules already do - and what the Urgency Shift model adds.</p>
+        <div class="pi-box">
+          <div class="pi-box-title">India Urgency Shift</div>
+          <p>CPIC tells you the phenotype class. Seed's new model predicts whether South Asian population structure should push urgency <strong>higher</strong> than that CPIC text alone - trained on 168 real genotype groups (grouped CV accuracy ${m.accuracy ?? 0.875}).</p>
+        </div>
         <div class="pi-box">
           <div class="pi-box-title">Beyond a lookup table</div>
           <pre>${esc(DATA.content.why_ai || "")}</pre>
@@ -563,9 +589,23 @@
     }
 
     function renderResearch() {
+      const m = DATA.urgency_shift_metrics || {};
       return `
         <div class="section-label">Research</div>
         <p class="section-sub">Honest group-level metrics. Each genotype counts once.</p>
+        <div class="pi-box">
+          <div class="pi-box-title">India Urgency Shift (new)</div>
+          <p>Binary XGBoost predicting whether population-adjusted urgency is higher than CPIC clinical significance alone. Features are population structure only - no CPIC class label in the feature vector.</p>
+          <table>
+            <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Grouped CV accuracy</td><td>${m.accuracy ?? "-"}</td></tr>
+              <tr><td>Macro F1</td><td>${m.macro_f1 ?? "-"}</td></tr>
+              <tr><td>Train/CV accuracy gap</td><td>${m.overfitting_diagnosis?.accuracy_gap ?? "-"}</td></tr>
+              <tr><td>Groups / splits</td><td>${m.n_groups ?? "-"} / ${m.n_splits ?? "-"}</td></tr>
+            </tbody>
+          </table>
+        </div>
         <div class="pi-box">
           <div class="pi-box-title">Model comparison</div>
           <table>

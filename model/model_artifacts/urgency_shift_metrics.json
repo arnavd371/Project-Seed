@@ -1,0 +1,65 @@
+{
+  "accuracy": 0.875,
+  "macro_f1": 0.8623,
+  "weighted_f1": 0.8797,
+  "cohen_kappa": 0.7284,
+  "per_class_f1": {
+    "0": 0.9041095890410958,
+    "1": 0.8205128205128205,
+    "2": 0.0,
+    "3": 0.0
+  },
+  "n_groups": 168,
+  "n_splits": 5,
+  "cv_method": "StratifiedGroupKFold by gene|genotype (metrics at group level)",
+  "features": [
+    "india_diplotype_freq",
+    "european_diplotype_freq",
+    "east_asian_diplotype_freq",
+    "african_diplotype_freq",
+    "american_diplotype_freq",
+    "global_diplotype_freq",
+    "log_sas_vs_eur",
+    "sas_vs_eas_ratio",
+    "sas_vs_global_ratio",
+    "gene_importance",
+    "is_chemo_gene",
+    "log_india_freq",
+    "freq_difference",
+    "subpop_dispersion",
+    "subpop_entropy",
+    "star_allele_count",
+    "is_compound_het",
+    "is_homozygous_variant"
+  ],
+  "labels": {
+    "0": "No upward shift",
+    "1": "Higher urgency for India"
+  },
+  "label": "india_urgency_higher_than_cpic",
+  "description": "Binary XGBoost: predict whether population-adjusted urgency is higher than CPIC clinical_significance alone, from population structure features.",
+  "tuned_params": {
+    "n_estimators": 120,
+    "max_depth": 4,
+    "learning_rate": 0.1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.9,
+    "reg_lambda": 5.0,
+    "min_child_weight": 3,
+    "gamma": 0.5
+  },
+  "tuning_cv_macro_f1": 0.8623,
+  "overfitting_diagnosis": {
+    "train_accuracy": 0.9107,
+    "train_macro_f1": 0.9,
+    "cv_accuracy": 0.875,
+    "cv_macro_f1": 0.8623,
+    "accuracy_gap": 0.0357,
+    "macro_f1_gap": 0.0377,
+    "overfitting_flagged": false,
+    "overfitting_threshold": 0.1,
+    "n_groups": 168,
+    "n_splits": 5
+  },
+  "artifact": "india_urgency_shift_xgb.pkl"
+}
